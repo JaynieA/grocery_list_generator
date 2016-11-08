@@ -1,8 +1,10 @@
+var allMeals = [];
 //OBJECT CONSTRUCTOR FUNCTIONS
 var Recipe = function(name,servings){
   this.name = name;
   this.servings= servings;
   this.ingredients= [];
+  allMeals.push(this);
 }; //end Recipe
 
 var Ingredient = function(item, amount, measurement){
@@ -139,8 +141,11 @@ addAllIngredients(macNcheeseIngredients, macNcheese);
 //pizza.printRecipe();
 //macNcheese.printRecipe();
 
+
 var weeksMeals =[macNcheese, pizza];
 
 printWeeksMeals(weeksMeals);
 
 printGroceryList(weeksMeals);
+
+console.log(allMeals);
