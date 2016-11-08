@@ -269,6 +269,20 @@ var cauliBuffaloWingsIngredients = [
 ];
 addAllIngredients(cauliBuffaloWingsIngredients, cauliBuffaloWings);
 
+//make Fancy Grilled Cheese Recipe
+var grilledCheese = new Recipe("Fancy Grilled Cheese and Tomato Soup", 2);
+var grilledCheeseIngredients = [
+  ["Jalapeno", 1, "item", "Produce"],
+  ["Cheddar Cheese", 2, "Slices", "Dairy"],
+  ["Avocado", 0.5, "item", "Produce"],
+  ["Small Tomato", 1, "item", "Produce"],
+  ["Bread", 4, "Slices"],
+  ["Butter", 1.5, "tbsp", "Dairy"],
+  ["Tomato Soup", 1, "Box"],
+  ["Ketchup", 4, "tbsp", "Other"]
+];
+addAllIngredients(grilledCheeseIngredients, grilledCheese);
+
 //PRINT RECIPES
 //spicyThaiNoodles.printRecipe();
 //macNcheese.printRecipe();
