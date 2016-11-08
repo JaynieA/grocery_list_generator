@@ -69,3 +69,34 @@ addIngredient(mexQuinoaIngredients, "Cilantro", 2, "tbsp");
 printRecipe(stirFryIngredients, weeksMeals.recipe1.name);
 
 printRecipe(mexQuinoaIngredients, weeksMeals.recipe2.name);
+
+
+
+
+var printGroceryList= function(mealsArray){
+  console.log("\n%cThis week's grocery List: ", "font-size: large");
+  groceryList = [];
+  //for every meal in weeksMeals
+  for (var i=0; i<mealsArray.length; i++){
+    //for every ingredient in weeksMeals
+    for (var y=0; y<mealsArray[i].ingredients.length; y++){
+      if (groceryList.length === 0){
+        groceryList.push([mealsArray[i].ingredients[y].item,mealsArray[i].ingredients[y].amount,mealsArray[i].ingredients[y].measurement]);
+      } else {
+        //for each ingredient in the groceryList
+        for (var x = 0; x<groceryList.length; x++){
+          //console.log(mealsArray[i].ingredients[y].item);
+          if(mealsArray[i].ingredients[y].item != groceryList[x][0]){ //if item is not already on the grocery list
+            //add it
+            console.log(mealsArray[i].ingredients[y].item+" is not equal to "+groceryList[x][0])
+            console.log("So add "+ mealsArray[i].ingredients[y].item+" to the array");
+            groceryList.push([mealsArray[i].ingredients[y].item,mealsArray[i].ingredients[y].amount,mealsArray[i].ingredients[y].measurement]);
+
+          } else {
+            //else just add it to the amount if the measurement type and name match
+            console.log(mealsArray[i].ingredients[y].item+" is already in the array.");
+          }
+        }
+      }
+    }
+  }

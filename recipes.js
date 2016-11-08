@@ -76,10 +76,29 @@ var mexQuinoaIngredients = [
 
 addAllIngredients(mexQuinoaIngredients, onePanMexQuinoa);
 
-onePanMexQuinoa.printRecipe();
-brownRiceStirFry.printRecipe();
+//Make Pizza Recipe
+var pizza = new Recipe("Pizza", 2);
+var pizzaIngredients = [
+    ["Pizza Crusts",1,"package"],
+    ['Cheese',1,"Cup"]
+];
+addAllIngredients(pizzaIngredients, pizza);
 
-var weeksMeals =[onePanMexQuinoa, brownRiceStirFry];
+//make mac n' cheese recipe
+var macNcheese = new Recipe("Mac and Cheese", 2);
+var macNcheeseIngredients = [
+  ["Macaroni and Cheese", 1, "Box"],
+  ["Milk", 2, "tbsp"],
+  ["Cheese", 0.25, "Cup"]
+];
+addAllIngredients(macNcheeseIngredients, macNcheese);
+
+//print recipes
+//pizza.printRecipe();
+//macNcheese.printRecipe();
+
+
+var weeksMeals =[macNcheese, pizza];
 
 //print the names of the meals you will be having this week
 var printWeeksMeals = function(mealsArray){
@@ -88,10 +107,47 @@ var printWeeksMeals = function(mealsArray){
     console.log(mealsArray[i].name);
   }
 };
-printWeeksMeals(weeksMeals);
+//printWeeksMeals(weeksMeals);
 
-var makeGroceryList= function(mealsArray){
+var printGroceryList= function(mealsArray){
   console.log("\n%cThis week's grocery List: ", "font-size: large");
-
+  groceryList = [];
+  for (i = 0; i < mealsArray.length; i++){
+    for (x = 0; x < mealsArray[i].ingredients.length; x++){
+      groceryList.push(mealsArray[i].ingredients[x]);
+    }
+  }
+  for (var i = 0; i < groceryList.length; i++){
+    console.log(groceryList[i].amount+" "+groceryList[i].measurement+" "+groceryList[i].item);
+  }
+  return groceryList;
 };
-makeGroceryList(weeksMeals);
+printGroceryList(weeksMeals);
+
+////////Condenses grocery list
+
+var output = [];
+
+groceryList.forEach(function(value) {
+    var existing = output.filter(function(v, i) {
+        return v.item == value.item && v.measurement == value.measurement;
+    });
+    if(existing.length) {
+        var existingIndex = output.indexOf(existing[0]);
+        output[existingIndex].amount = output[existingIndex].amount+value.amount;
+    }
+    else {
+        if(typeof value.amount == 'number')
+            value.amount = value.amount;
+        output.push(value);
+    }
+    return output;
+});
+
+//console.dir(output);
+//console.log(output);
+
+console.log("\n%cCondensed grocery List: ", "font-size: large");
+for (var i = 0; i < output.length; i++) {
+  console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+}
