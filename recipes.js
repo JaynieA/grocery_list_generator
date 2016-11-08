@@ -38,6 +38,43 @@ var addAllIngredients = function(completeIngredientsArray, recipeObject){
   });
 }; //end addAllIngredients
 
+var printWeeksMeals = function(mealsArray){
+  console.log("\n%cThis week's meals: ", "font-size: large");
+  for (var i = 0; i < mealsArray.length; i++){
+    console.log(mealsArray[i].name);
+  }
+};
+
+var makeGroceryList= function(mealsArray){
+  groceryList = [];
+  for (i = 0; i < mealsArray.length; i++){
+    for (x = 0; x < mealsArray[i].ingredients.length; x++){
+      groceryList.push(mealsArray[i].ingredients[x]);
+    }
+  }
+  //Condenses grocery list if measurement and item are the same
+  var output = [];
+  groceryList.forEach(function(value) {
+      var existing = output.filter(function(v, i) {
+          return v.item == value.item && v.measurement == value.measurement;
+      });
+      if(existing.length) {
+          var existingIndex = output.indexOf(existing[0]);
+          output[existingIndex].amount = output[existingIndex].amount+value.amount;
+      }
+      else {
+          if(typeof value.amount == 'number')
+              value.amount = value.amount;
+          output.push(value);
+      }
+  });
+  console.log("\n%cGrocery List: ", "font-size: large");
+  for (var i = 0; i < output.length; i++) {
+    console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+  }
+  return output;
+}; //end makeGroceryList
+
 //MAKE RECIPE OBJECTS
 //Make Brown rice stir fry recipe
 var brownRiceStirFry = new Recipe("Brown Rice Stir Fry", 3);
@@ -100,49 +137,9 @@ addAllIngredients(macNcheeseIngredients, macNcheese);
 
 var weeksMeals =[macNcheese, pizza];
 
-//print the names of the meals you will be having this week
-var printWeeksMeals = function(mealsArray){
-  console.log("\n%cThis week's meals: ", "font-size: large");
-  for (var i = 0; i < mealsArray.length; i++){
-    console.log(mealsArray[i].name);
-  }
-};
+
+
 printWeeksMeals(weeksMeals);
 
-var makeGroceryList= function(mealsArray){
-  //console.log("\n%cThis week's grocery List: ", "font-size: large");
-  groceryList = [];
-  for (i = 0; i < mealsArray.length; i++){
-    for (x = 0; x < mealsArray[i].ingredients.length; x++){
-      groceryList.push(mealsArray[i].ingredients[x]);
-    }
-  }
-  return groceryList;
-};
+
 makeGroceryList(weeksMeals);
-
-////////Condenses grocery list
-
-var printCondensedGroceryList = function(list) {
-  var output = [];
-  list.forEach(function(value) {
-      var existing = output.filter(function(v, i) {
-          return v.item == value.item && v.measurement == value.measurement;
-      });
-      if(existing.length) {
-          var existingIndex = output.indexOf(existing[0]);
-          output[existingIndex].amount = output[existingIndex].amount+value.amount;
-      }
-      else {
-          if(typeof value.amount == 'number')
-              value.amount = value.amount;
-          output.push(value);
-      }
-  });
-  console.log("\n%cGrocery List: ", "font-size: large");
-  for (var i = 0; i < output.length; i++) {
-    console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
-  }
-  return output;
-};
-printCondensedGroceryList(groceryList);
