@@ -96,6 +96,9 @@ var printGroceryList= function(mealsArray){
     if (output[i].amount === 0.25) {
       output[i].amount = "1/4";
     }
+    if (output[i].amount === 0.75) {
+      output[i].amount = "3/4";
+    }
     if (output[i].measurement === "item") {
       output[i].measurement = '';
     }
@@ -208,7 +211,8 @@ var spicyThaiNoodlesIngredients = [
   ["Sriracha", 1, "tbsp", "Other"],
   ["Ginger Root", 2, "inches", "Produce"],
   ["Cilantro", 1, "handful", "Produce"],
-  ["Green Onions", 4, "item", "Produce"]
+  ["Green Onions", 4, "item", "Produce"],
+  ["Chicken Breast", 1, "item", "Meat"]
 ];
 addAllIngredients(spicyThaiNoodlesIngredients, spicyThaiNoodles);
 
@@ -221,6 +225,49 @@ var gnocciAndBeansIngredients = [
   ["Butter", 0.5, "tbsp", "Dairy"]
 ];
 addAllIngredients(gnocciAndBeansIngredients, gnocciAndGreenBeans);
+
+//make White Chili Recipe
+var whiteChili = new Recipe("White Chili", 6);
+var whiteChiliIngredients = [
+  ["Red Potato", 1.5, "lbs", "Produce"],
+  ["Great Northern Beans", 2, "Can", "Canned"],
+  ["Rotel", 3, "Can", "Canned"],
+  ["Onion", 1, "item", "Produce"],
+  ["Jalapeno", 4, "item", "Produce"],
+  ["Chicken or Beef", 1, "lb", "Meat"],
+  ["Heavy Cream", 1, "Pint", "Dairy"],
+  ["Shredded Cheddar Cheese", 1, "Package", "Dairy"]
+];
+addAllIngredients(whiteChiliIngredients, whiteChili);
+
+//make Crock Pot Veggie Lasagna Recipe
+var lasagna = new Recipe("Crock Pot Veggie Lasagna", 4);
+var lasagnaIngredients = [
+  ["Pasta Sauce", 1, "24 oz Jar", "Canned"],
+  ["Pasta Sauce", 1, "Cup", "Canned"],
+  ["Long Lasagna Noodles", 9 , "item", "Dry"],
+  ["Onion", 0.15, "item", "Produce"],
+  ["Mushrooms", 5, "oz", "Produce"],
+  ["Red Bell Pepper", 0.5, "item", "Produce"],
+  ["Garlic", 1, "Clove", "Produce"],
+  ["Olive Oil", 1, "tbsp", "Other"],
+  ["Ricotta Cheese", 15, "oz", "Dairy"],
+  ["Shredded Cheese", 1.5, "Cup", "Dairy"],
+  ["Eggs", 1, "item", "Dairy"]
+];
+addAllIngredients(lasagnaIngredients, lasagna);
+
+//make Cauliflower Buffalo Wings Recipe
+var cauliBuffaloWings = new Recipe("Cauliflower Buffalo Wings", 2);
+var cauliBuffaloWingsIngredients = [
+  ["Brown Rice Flower", 3/4, "Cup", "Dry"],
+  ["Paprika", 1, "tsp", "Other"],
+  ["Garlic Powder", 2, "tsp", "Other"],
+  ["Cauliflower", 1, "Head", "Produce"],
+  ["Franks Hot Sauce", 3/4, "Cup", "Other"],
+  ["Avocado", 1, "item", "Produce"],
+];
+addAllIngredients(cauliBuffaloWingsIngredients, cauliBuffaloWings);
 
 //PRINT RECIPES
 //spicyThaiNoodles.printRecipe();
