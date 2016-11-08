@@ -88,7 +88,7 @@ var printGroceryList= function(mealsArray){
       }
   });
   //Print formatted grocery list
-  console.log("\n%cGrocery List: ", "font-size: large");
+  //console.log("\n%cGrocery List: ", "font-size: large");
   for (var i = 0; i < output.length; i++) {
     if (output[i].amount === 0.5){
       output[i].amount = "1/2";
@@ -128,9 +128,9 @@ var printGroceryList= function(mealsArray){
 }; //end makeGroceryList
 
 var printWeeksMeals = function(mealsArray){
-  console.log("\n%cThis week's meals: ", "font-size: large");
+  //console.log("\n%cThis week's meals: ", "font-size: large");
   for (var i = 0; i < mealsArray.length; i++){
-    console.log(mealsArray[i].name);
+    //console.log(mealsArray[i].name);
     $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
   }
 }; //end printWeeksMeals
