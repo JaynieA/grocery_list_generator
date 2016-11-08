@@ -117,7 +117,7 @@ var stirFryIngredients = [
   ["Brown Rice", 1, "Cup"],
   ["Zucchini", 0.5, "item"],
   ["Red Bell Pepper", 0.5, "item"],
-  ["Mushrooms", 0.5, "Cup"],
+  ["Mushrooms", 5 , "oz"],
   ["Soy Sauce", 3, "tbsp"],
   ["Parsley", 2, "tbsp"],
   ["Garlic", 4, "Cloves"],
@@ -162,17 +162,47 @@ var macNcheeseIngredients = [
   ["Milk", 2, "tbsp"],
   ["Shredded Cheese", 0.25, "Cup"],
   ["Butter",1, "tbsp"],
-  ["Parmesan Cheese", 0.5, "Cup"]
+  ["Parmesan Cheese", 0.5, "Cup"],
+  ["Green Beans", 1, "Package"]
 ];
 addAllIngredients(macNcheeseIngredients, macNcheese);
 
+//make Spicy Thai Noodles Recipe
+var spicyThaiNoodles = new Recipe("One Pot Spicy Thai Noodles", 4);
+var spicyThaiNoodlesIngredients = [
+  ["Linguine Noodles", 1,"Lb"],
+  ["Olive Oil", 2, "tbsp"],
+  ["Eggs", 2, "item"],
+  ["Crushed Red Pepper Flakes", 0.5, "tsp"],
+  ["Zucchini", 1, "item"],
+  ["Mushrooms", 10, "oz"],
+  ["Garlic", 3, "Cloves"],
+  ["Brown Sugar", 2, "tbsp"],
+  ["Soy Sauce", 6, "tbsp"],
+  ["Sriracha", 1, "tbsp"],
+  ["Ginger Root", 2, "inches"],
+  ["Cilantro", 1, "handful"],
+  ["Green Onions", 4, "item"]
+];
+addAllIngredients(spicyThaiNoodlesIngredients, spicyThaiNoodles);
+
+//make gnocci and green beans Recipe
+var gnocciAndGreenBeans = new Recipe("Sweet Potato Gnocci and Parmesan Green Beans", 2);
+var gnocciAndBeansIngredients = [
+  ["Sweet Potato Gnocci", 1, "Frozen Package"],
+  ["Green Beans", 1, "Package"],
+  ["Parmesan", 0.25, "Cup"],
+  ["Butter", 0.5, "tbsp"]
+];
+addAllIngredients(gnocciAndBeansIngredients, gnocciAndGreenBeans);
+
 //PRINT RECIPES
-//pizza.printRecipe();
+//spicyThaiNoodles.printRecipe();
 //macNcheese.printRecipe();
 
 weeksMeals = [];
 
 
-chooseWeeksMeals(1);
+chooseWeeksMeals(4);
 printWeeksMeals(weeksMeals);
 printGroceryList(weeksMeals);

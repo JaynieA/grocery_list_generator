@@ -1,0 +1,14 @@
+html,
+body {
+  font-family: 'Roboto', sans-serif; }
+
+h1 {
+  font-size: 30px; }
+
+.container {
+  width: 70%; }
+
+button {
+  margin-top: 8px; }
+
+/*# sourceMappingURL=style.css.map */
