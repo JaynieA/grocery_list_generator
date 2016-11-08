@@ -1,4 +1,5 @@
 var allMeals = [];
+
 //OBJECT CONSTRUCTOR FUNCTIONS
 var Recipe = function(name,servings){
   this.name = name;
@@ -40,12 +41,26 @@ var addAllIngredients = function(completeIngredientsArray, recipeObject){
   });
 }; //end addAllIngredients
 
-var printWeeksMeals = function(mealsArray){
-  console.log("\n%cThis week's meals: ", "font-size: large");
-  for (var i = 0; i < mealsArray.length; i++){
-    console.log(mealsArray[i].name);
+var chooseWeeksMeals = function(amount){
+  numbers = [];
+  while (numbers.length<amount){
+    num = getRandomInt();
+    if ($.inArray(num, numbers) === -1) {
+      numbers.push(num);
+    }
   }
-};
+  for (var i = 0; i <numbers.length; i++) {
+    weeksMeals.push(allMeals[numbers[i]]);
+  }
+  return weeksMeals;
+}; //end chooseWeeksMeals
+
+var getRandomInt = function() {
+  min = Math.ceil(0);
+  max = Math.floor(allMeals.length);
+  num = Math.floor(Math.random()*(max-min))+min;
+  return num;
+}; //end getRandomInt
 
 var printGroceryList= function(mealsArray){
   groceryList = [];
@@ -77,6 +92,9 @@ var printGroceryList= function(mealsArray){
     if (output[i].amount === 0.5){
       output[i].amount = "1/2";
     }
+    if (output[i].amount === 0.25) {
+      output[i].amount = "1/4";
+    }
     if (output[i].measurement === "item") {
       output[i].measurement = '';
     }
@@ -84,6 +102,13 @@ var printGroceryList= function(mealsArray){
   }
   return output;
 }; //end makeGroceryList
+
+var printWeeksMeals = function(mealsArray){
+  console.log("\n%cThis week's meals: ", "font-size: large");
+  for (var i = 0; i < mealsArray.length; i++){
+    console.log(mealsArray[i].name);
+  }
+}; //end printWeeksMeals
 
 //MAKE RECIPE OBJECTS
 //Make Brown rice stir fry recipe
@@ -131,12 +156,13 @@ var pizzaIngredients = [
 addAllIngredients(pizzaIngredients, pizza);
 
 //make mac n' cheese recipe
-var macNcheese = new Recipe("Mac and Cheese", 2);
+var macNcheese = new Recipe("Mac and Cheese and Green Beans", 2);
 var macNcheeseIngredients = [
   ["Macaroni and Cheese", 1, "Box"],
   ["Milk", 2, "tbsp"],
-  ["Cheese", 0.25, "Cup"],
-  ["Butter",1, "tbsp"]
+  ["Shredded Cheese", 0.25, "Cup"],
+  ["Butter",1, "tbsp"],
+  ["Parmesan Cheese", 0.5, "Cup"]
 ];
 addAllIngredients(macNcheeseIngredients, macNcheese);
 
@@ -144,33 +170,9 @@ addAllIngredients(macNcheeseIngredients, macNcheese);
 //pizza.printRecipe();
 //macNcheese.printRecipe();
 
-
-//var weeksMeals =[macNcheese, pizza];
 weeksMeals = [];
 
 
-
-var getRandomInt = function() {
-  min = Math.ceil(0);
-  max = Math.floor(allMeals.length);
-  num = Math.floor(Math.random()*(max-min))+min;
-  return num;
-};
-var chooseWeeksMeals = function(amount){
-  numbers = [];
-  while (numbers.length<amount){
-    num = getRandomInt();
-    if ($.inArray(num, numbers) === -1) {
-      numbers.push(num);
-    }
-  }
-  for (var i = 0; i <numbers.length; i++) {
-    weeksMeals.push(allMeals[numbers[i]]);
-  }
-  return weeksMeals;
-};
 chooseWeeksMeals(1);
-
 printWeeksMeals(weeksMeals);
-
 printGroceryList(weeksMeals);
