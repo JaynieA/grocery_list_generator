@@ -107,47 +107,42 @@ var printWeeksMeals = function(mealsArray){
     console.log(mealsArray[i].name);
   }
 };
-//printWeeksMeals(weeksMeals);
+printWeeksMeals(weeksMeals);
 
-var printGroceryList= function(mealsArray){
-  console.log("\n%cThis week's grocery List: ", "font-size: large");
+var makeGroceryList= function(mealsArray){
+  //console.log("\n%cThis week's grocery List: ", "font-size: large");
   groceryList = [];
   for (i = 0; i < mealsArray.length; i++){
     for (x = 0; x < mealsArray[i].ingredients.length; x++){
       groceryList.push(mealsArray[i].ingredients[x]);
     }
   }
-  for (var i = 0; i < groceryList.length; i++){
-    console.log(groceryList[i].amount+" "+groceryList[i].measurement+" "+groceryList[i].item);
-  }
   return groceryList;
 };
-printGroceryList(weeksMeals);
+makeGroceryList(weeksMeals);
 
 ////////Condenses grocery list
 
-var output = [];
-
-groceryList.forEach(function(value) {
-    var existing = output.filter(function(v, i) {
-        return v.item == value.item && v.measurement == value.measurement;
-    });
-    if(existing.length) {
-        var existingIndex = output.indexOf(existing[0]);
-        output[existingIndex].amount = output[existingIndex].amount+value.amount;
-    }
-    else {
-        if(typeof value.amount == 'number')
-            value.amount = value.amount;
-        output.push(value);
-    }
-    return output;
-});
-
-//console.dir(output);
-//console.log(output);
-
-console.log("\n%cCondensed grocery List: ", "font-size: large");
-for (var i = 0; i < output.length; i++) {
-  console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
-}
+var printCondensedGroceryList = function(list) {
+  var output = [];
+  list.forEach(function(value) {
+      var existing = output.filter(function(v, i) {
+          return v.item == value.item && v.measurement == value.measurement;
+      });
+      if(existing.length) {
+          var existingIndex = output.indexOf(existing[0]);
+          output[existingIndex].amount = output[existingIndex].amount+value.amount;
+      }
+      else {
+          if(typeof value.amount == 'number')
+              value.amount = value.amount;
+          output.push(value);
+      }
+  });
+  console.log("\n%cGrocery List: ", "font-size: large");
+  for (var i = 0; i < output.length; i++) {
+    console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+  }
+  return output;
+};
+printCondensedGroceryList(groceryList);
