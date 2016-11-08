@@ -87,7 +87,7 @@ var printGroceryList= function(mealsArray){
       }
   });
   //Print formatted grocery list
-  console.log("\n%cGrocery List: ", "font-size: large");
+  //console.log("\n%cGrocery List: ", "font-size: large");
   for (var i = 0; i < output.length; i++) {
     if (output[i].amount === 0.5){
       output[i].amount = "1/2";
@@ -98,17 +98,20 @@ var printGroceryList= function(mealsArray){
     if (output[i].measurement === "item") {
       output[i].measurement = '';
     }
-    console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+    $('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
+    //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
   }
   return output;
 }; //end makeGroceryList
 
 var printWeeksMeals = function(mealsArray){
-  console.log("\n%cThis week's meals: ", "font-size: large");
+  //console.log("\n%cThis week's meals: ", "font-size: large");
   for (var i = 0; i < mealsArray.length; i++){
-    console.log(mealsArray[i].name);
+    //console.log(mealsArray[i].name);
+    $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>")
   }
 }; //end printWeeksMeals
+
 
 //MAKE RECIPE OBJECTS
 //Make Brown rice stir fry recipe
@@ -202,7 +205,12 @@ addAllIngredients(gnocciAndBeansIngredients, gnocciAndGreenBeans);
 
 weeksMeals = [];
 
-
-chooseWeeksMeals(4);
-printWeeksMeals(weeksMeals);
-printGroceryList(weeksMeals);
+var revealList =  function() {
+  $('.hideable').hide();
+  $('.results').show();
+  var numMeals = $('#numMeals').val();
+  chooseWeeksMeals(numMeals);
+  printWeeksMeals(weeksMeals);
+  printGroceryList(weeksMeals);
+  return weeksMeals;
+};
