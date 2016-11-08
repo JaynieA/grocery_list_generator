@@ -77,6 +77,9 @@ var printGroceryList= function(mealsArray){
     if (output[i].amount === 0.5){
       output[i].amount = "1/2";
     }
+    if (output[i].measurement === "item") {
+      output[i].measurement = '';
+    }
     console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
   }
   return output;
@@ -137,15 +140,37 @@ var macNcheeseIngredients = [
 ];
 addAllIngredients(macNcheeseIngredients, macNcheese);
 
-//print recipes
+//PRINT RECIPES
 //pizza.printRecipe();
 //macNcheese.printRecipe();
 
 
-var weeksMeals =[macNcheese, pizza];
+//var weeksMeals =[macNcheese, pizza];
+weeksMeals = [];
+
+
+
+var getRandomInt = function() {
+  min = Math.ceil(0);
+  max = Math.floor(allMeals.length);
+  num = Math.floor(Math.random()*(max-min))+min;
+  return num;
+};
+var chooseWeeksMeals = function(amount){
+  numbers = [];
+  while (numbers.length<amount){
+    num = getRandomInt();
+    if ($.inArray(num, numbers) === -1) {
+      numbers.push(num);
+    }
+  }
+  for (var i = 0; i <numbers.length; i++) {
+    weeksMeals.push(allMeals[numbers[i]]);
+  }
+  return weeksMeals;
+};
+chooseWeeksMeals(1);
 
 printWeeksMeals(weeksMeals);
 
 printGroceryList(weeksMeals);
-
-console.log(allMeals);
