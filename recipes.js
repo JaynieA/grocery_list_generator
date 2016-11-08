@@ -45,14 +45,15 @@ var printWeeksMeals = function(mealsArray){
   }
 };
 
-var makeGroceryList= function(mealsArray){
+var printGroceryList= function(mealsArray){
   groceryList = [];
+  //add all ingredients in mealsArray objects to groceryList array
   for (i = 0; i < mealsArray.length; i++){
     for (x = 0; x < mealsArray[i].ingredients.length; x++){
       groceryList.push(mealsArray[i].ingredients[x]);
     }
   }
-  //Condenses grocery list if measurement and item are the same
+  //Condense grocery list if an ingredient item and measurement are the same
   var output = [];
   groceryList.forEach(function(value) {
       var existing = output.filter(function(v, i) {
@@ -68,8 +69,12 @@ var makeGroceryList= function(mealsArray){
           output.push(value);
       }
   });
+  //Print formatted grocery list
   console.log("\n%cGrocery List: ", "font-size: large");
   for (var i = 0; i < output.length; i++) {
+    if (output[i].amount === 0.5){
+      output[i].amount = "1/2";
+    }
     console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
   }
   return output;
@@ -91,7 +96,6 @@ var stirFryIngredients = [
   ["Broccoli", 0.5, "Head"],
   ["Olive Oil", 1, "tbsp"]
 ];
-
 addAllIngredients(stirFryIngredients, brownRiceStirFry);
 
 //Make One Pan Mexican Quinoa recipe
@@ -110,14 +114,14 @@ var mexQuinoaIngredients = [
   ["Lime", 1, "item"],
   ["Cilantro", 2, "tbsp"]
 ];
-
 addAllIngredients(mexQuinoaIngredients, onePanMexQuinoa);
 
 //Make Pizza Recipe
 var pizza = new Recipe("Pizza", 2);
 var pizzaIngredients = [
     ["Pizza Crusts",1,"package"],
-    ['Cheese',1,"Cup"]
+    ['Cheese',1,"Cup"],
+    ['Marinara Sauce', 0.5, "Cup"]
 ];
 addAllIngredients(pizzaIngredients, pizza);
 
@@ -126,7 +130,8 @@ var macNcheese = new Recipe("Mac and Cheese", 2);
 var macNcheeseIngredients = [
   ["Macaroni and Cheese", 1, "Box"],
   ["Milk", 2, "tbsp"],
-  ["Cheese", 0.25, "Cup"]
+  ["Cheese", 0.25, "Cup"],
+  ["Butter",1, "tbsp"]
 ];
 addAllIngredients(macNcheeseIngredients, macNcheese);
 
@@ -134,12 +139,8 @@ addAllIngredients(macNcheeseIngredients, macNcheese);
 //pizza.printRecipe();
 //macNcheese.printRecipe();
 
-
 var weeksMeals =[macNcheese, pizza];
-
-
 
 printWeeksMeals(weeksMeals);
 
-
-makeGroceryList(weeksMeals);
+printGroceryList(weeksMeals);
