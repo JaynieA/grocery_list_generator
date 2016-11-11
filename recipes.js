@@ -258,7 +258,7 @@ var lasagnaIngredients = [
 addAllIngredients(lasagnaIngredients, lasagna);
 
 //make Cauliflower Buffalo Wings Recipe
-var cauliBuffaloWings = new Recipe("Cauliflower Buffalo Wings", 2);
+var cauliBuffaloWings = new Recipe("Cauliflower Buffalo Wings and Mushroom Risotto", 2);
 var cauliBuffaloWingsIngredients = [
   ["Brown Rice Flower", 3/4, "Cup", "Dry"],
   ["Paprika", 1, "tsp", "Other"],
@@ -266,11 +266,13 @@ var cauliBuffaloWingsIngredients = [
   ["Cauliflower", 1, "Head", "Produce"],
   ["Franks Hot Sauce", 3/4, "Cup", "Other"],
   ["Avocado", 1, "item", "Produce"],
+  ["Mushroom Risotto", 1, "Package", "Frozen"],
+  ["Chicken Breast", 1, "item", "Meat"]
 ];
 addAllIngredients(cauliBuffaloWingsIngredients, cauliBuffaloWings);
 
 //make Fancy Grilled Cheese Recipe
-var grilledCheese = new Recipe("Fancy Grilled Cheese and Tomato Soup", 2);
+var grilledCheese = new Recipe("Grilled Cheese and Tomato Soup", 2);
 var grilledCheeseIngredients = [
   ["Jalapeno", 1, "item", "Produce"],
   ["Cheddar Cheese", 2, "Slices", "Dairy"],
