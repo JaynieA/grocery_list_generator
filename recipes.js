@@ -23,13 +23,12 @@ Recipe.prototype = {
   printRecipe: function(){
     console.log("\n%c"+this.name, "font-size: large");
     for (var i = 0; i < this.ingredients.length; i++){
-      if (this.ingredients[i].amount === 0.5) {
-        this.ingredients[i].amount = "1/2";
-      }
+      var amount = new Fraction(this.ingredients[i].amount);
+      var fractionAmt = amount.toFraction(true);
       if(this.ingredients[i].measurement === "item") {
-        console.log(this.ingredients[i].amount+" "+this.ingredients[i].item +"\n");
+        console.log(fractionAmt+" "+this.ingredients[i].item +"\n");
       } else {
-        console.log(this.ingredients[i].amount+" "+this.ingredients[i].measurement+" "+this.ingredients[i].item +"\n");
+        console.log(fractionAmt+" "+this.ingredients[i].measurement+" "+this.ingredients[i].item +"\n");
       }
     }
   } //end printRecipe
@@ -90,45 +89,34 @@ var printGroceryList= function(mealsArray){
   //Print formatted grocery list
   //console.log("\n%cGrocery List: ", "font-size: large");
   for (var i = 0; i < output.length; i++) {
-    if (output[i].amount === 0.5){
-      output[i].amount = "1/2";
-    }
-    if (output[i].amount === 0.25) {
-      output[i].amount = "1/4";
-    }
-    if (output[i].amount === 0.75) {
-      output[i].amount = "3/4";
-    }
+    var amount = new Fraction(output[i].amount);
+    var fractionAmt = amount.toFraction(true);
+
     if (output[i].measurement === "item") {
       output[i].measurement = '';
     }
     //$('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
     //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
-    if (output[i].category === "Produce") {
-      $('#produce').html($('#produce').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
+    var categories = [
+      ["Produce", "#produce"],
+      ["Frozen", '#frozen'],
+      ['Dairy', '#dairy'],
+      ['Meat', '#meat'],
+      ['Other', '#other'],
+      ['Dry', '#dry'],
+      ['Canned', '#canned']
+    ];
+    for (var z = 0; z < categories.length; z++) {
+      var category = categories[z][0];
+      var id = categories[z][1];
+      if (output[i].category === category) {
+        $(id).html($(id).html()+"<li>"+ fractionAmt+" "+output[i].measurement+" "+output[i].item+"</li>");
+      }
     }
-    if (output[i].category === "Frozen") {
-      $('#frozen').html($('#frozen').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    }
-    if (output[i].category === "Dairy") {
-      $('#dairy').html($('#dairy').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    }
-    if (output[i].category === "Meat") {
-      $('#meat').html($('#meat').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    }
-    if (output[i].category === "Other") {
-      $('#other').html($('#other').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    }
-    if (output[i].category === "Dry") {
-      $('#dry').html($('#dry').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    }
-    if (output[i].category === "Canned") {
-      $('#canned').html($('#canned').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    }
-
   }
   return output;
 }; //end makeGroceryList
+
 
 var printWeeksMeals = function(mealsArray){
   //console.log("\n%cThis week's meals: ", "font-size: large");
