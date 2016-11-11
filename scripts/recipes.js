@@ -91,12 +91,12 @@ var printGroceryList= function(mealsArray){
   for (var i = 0; i < output.length; i++) {
     var amount = new Fraction(output[i].amount);
     var fractionAmt = amount.toFraction(true);
-
     if (output[i].measurement === "item") {
       output[i].measurement = '';
     }
     //$('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
     //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+    //Iterate through categories and assign to DOM element
     var categories = [
       ["Produce", "#produce"],
       ["Frozen", '#frozen'],
@@ -117,7 +117,6 @@ var printGroceryList= function(mealsArray){
   return output;
 }; //end makeGroceryList
 
-
 var printWeeksMeals = function(mealsArray){
   //console.log("\n%cThis week's meals: ", "font-size: large");
   for (var i = 0; i < mealsArray.length; i++){
@@ -125,7 +124,6 @@ var printWeeksMeals = function(mealsArray){
     $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
   }
 }; //end printWeeksMeals
-
 
 //MAKE RECIPE OBJECTS
 //Make Brown rice stir fry recipe
@@ -190,7 +188,7 @@ var spicyThaiNoodlesIngredients = [
   ["Linguine Noodles", 1,"Lb", "Dry"],
   ["Olive Oil", 2, "tbsp", "Other"],
   ["Eggs", 2, "item", "Dairy"],
-  ["Crushed Red Pepper Flakes", 0.5, "tsp", "Other"],
+  ["Red Pepper Flakes", 0.5, "tsp", "Other"],
   ["Zucchini", 1, "item", "Produce"],
   ["Mushrooms", 10, "oz", "Produce"],
   ["Garlic", 3, "Cloves", "Produce"],
@@ -272,6 +270,43 @@ var grilledCheeseIngredients = [
   ["Ketchup", 4, "tbsp", "Other"]
 ];
 addAllIngredients(grilledCheeseIngredients, grilledCheese);
+
+//make Vegetarian Lettuce Wraps Recipe
+var lettuceWrap = new Recipe("Vegetarian Lettuce Wraps", 4);
+var lettuceWrapIngredients = [
+  ["Hoisin Sauce", 3, "tbsp", 'Other'],
+  ["Soy Sauce", 3, "tbsp", "Other"],
+  ["Rice Vinegar", 2, "tbsp", "Other"],
+  ["Olive Oil", 1, "tsp", "Other"],
+  ["Canola Oil", 2, "tsp", "Other"],
+  ["Extra Firm Tofu", 1, "Package", "Other"],
+  ["Baby Bella (Cremini) Mushrooms", 8 , "oz", "Produce"],
+  ["Water Chestnuts", 1, "8 oz. Can", "Canned"],
+  ["Garlic", 2, "Clove", "Produce"],
+  ["Ginger Root", 3, "inches", "Produce"],
+  ["Red Pepper Flakes", 0.75, "tsp", "Other"],
+  ["Green Onions", 4, "item", "Produce"],
+  ["Romaine Lettuce", 8, "Large Leaves", "Produce"]
+];
+addAllIngredients(lettuceWrapIngredients, lettuceWrap);
+
+//Make Zucchini Burrito Boats Recipe
+var burritoBoats = new Recipe("Zuccini Burrito Boats", 4);
+var burritoBoatIngredients = [
+  ["Zucchini", 4, "item", "Produce"],
+  ["Black Beans", 1, "15 oz Can", "Canned"],
+  ["Brown Rice", 1, "Cup", "Dry"],
+  ["Salsa", 1, "Cup", "Canned"],
+  ["Red Bell Pepper", 1, "item", "Produce"],
+  ["Red Onion", 0.5, "item", "Produce"],
+  ["Corn Kernels", 0.5, "Cup", "Canned"],
+  ["Jalapeno", 1, "item", "Produce"],
+  ["Olive Oil", 1, "tbsp", "Other"],
+  ["Cumin", 2, "tsp", "Other"],
+  ["Chili Powder", 2, "tsp", "Other"],
+  ["Cilantro", 0.5, "Cup", "Produce"],
+  ["Shredded Cheddar Cheese", 1, "Cup", "Dairy"]
+];
 
 //PRINT RECIPES
 //spicyThaiNoodles.printRecipe();
