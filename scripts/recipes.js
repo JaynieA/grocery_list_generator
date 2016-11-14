@@ -307,6 +307,89 @@ var burritoBoatIngredients = [
   ["Cilantro", 0.5, "Cup", "Produce"],
   ["Shredded Cheddar Cheese", 1, "Cup", "Dairy"]
 ];
+addAllIngredients(burritoBoatIngredients, burritoBoats);
+
+//Make Bacon and Brussel Sprout Penne Recipe
+var brusselSproutPenne = new Recipe("Bacon and Brussel Sprout Penne", 4);
+var brusselSproutPenneIngredients = [
+  ["Penne Pasta", 1, "lb", "Dry"],
+  ["Bacon", 6, "slices", "Meat"],
+  ["Brussel Sprouts", 12, "oz", "Produce"],
+  ["Salt", 0.5, "tsp", "Other"],
+  ["Pepper", 0.5, "tsp", "Other"],
+  ["Green Onions", 2, "item", "Produce"],
+  ["Golden Raisins", 0.5, "Cup", "Dry"],
+  ["Dry White Wine", 0.5, "Cup", "Other"]
+];
+addAllIngredients(brusselSproutPenneIngredients, brusselSproutPenne);
+
+//Make Broccoli Quinoa Casserole
+var broccoliQuinoaCasserole = new Recipe("Broccoli Quinoa Casserole", 4);
+var broccoliQuinoaCasseroleIngredients = [
+  ["Quinoa", 2.5, "Cup", "Dry"],
+  ["Vegetable Broth", 4.5, "Cup", "Canned"],
+  ["Pesto Sauce", 2, "tbsp", "Canned"],
+  ["Salt", 0.5, "tsp", "Other"],
+  ["Arrowroot powder or Cornstarch", 2, "tsp", "Dry"],
+  ["Spinach", 2, "Cup", "Produce"],
+  ["Mozzarella Cheese", 15, "oz", "Dairy"],
+  ["Parmesan Cheese", 1/3, "Cup", "Dairy"],
+  ["Broccoli Florets", 12, "oz", "Produce"],
+  ["Green Onions", 3, "item", "Produce"]
+];
+addAllIngredients(broccoliQuinoaCasseroleIngredients, broccoliQuinoaCasserole);
+
+//Make Easy Pantry Pasta
+var pantryPasta = new Recipe("Easy Pantry Pasta", 4);
+var pantryPastaIngredients = [
+  ["Country Bread", 2, "Slices", "Dry"],
+  ["Olive Oil", 6, "tbsp", "Other"],
+  ["Yellow Onion", 0.5, "item", "Produce"],
+  ["Garlic", 2, "Cloves", "Produce"],
+  ["Crushed Red Pepper", 3/4, "tsp", "Other"],
+  ["Salt", 1/4, "tsp", "Other"],
+  ["Parsley", 3, "tbsp", "Produce"],
+  ["Capers", 2, "tbsp", "Canned"],
+  ["Lemon", 1, "item", "Produce"],
+  ["Spaghetti or Linguine Noodles", 3/4, "lb", "Dry"],
+  ["Eggs", 3, "item", "Dairy"],
+  ["Parmesan", 1/2, "Cup", "Dairy"]
+];
+addAllIngredients(pantryPastaIngredients, pantryPasta);
+
+//Make Tortilla Soup
+var tortillaSoup = new Recipe("Vegetarian Tortilla Soup", 2);
+var tortillaSoupIngredients = [
+  ["Poblano Pepper", 1, "item", "Produce"],
+  ["Olive Oil", 1, "tbsp", "Other"],
+  ["White Onion", 1, "item", "Produce"],
+  ["Garlic", 2, "Cloves", "Produce"],
+  ["Jalapeno", 2, "item", "Produce"],
+  ["Cumin", 1, "tsp", "Other"],
+  ["Crushed Tomatos", 1, "14 oz Can", "Canned"],
+  ["Vegetable Broth", 4, "Cup", "Canned"],
+  ["Black Beans", 1, "15 oz. Can", "Canned"],
+  ["Corn Tortillas", 6, "item", "Dry"],
+  ["Avocado", 1, "item", "Produce"],
+  ["Radish", 2, "item", "Produce"],
+  ["Queso Fresco", 2, "oz", "Dairy"],
+  ["Cilantro", 3, "tbsp", "Produce"],
+  ["Lime", 1, "item", "Produce"]
+];
+addAllIngredients(tortillaSoupIngredients, tortillaSoup);
+
+//Add Amish Breakfash Casserole
+var breakfastCasserole = new Recipe("Amish Breakfast Casserole", 4);
+var breakfastCasseroleIngredients = [
+  ["Bacon", 3, "Slices", "Meat"],
+  ["Sweet Onion", 0.5, "item", "Produce"],
+  ["Eggs", 3, "item", "Dairy"],
+  ["Potato", 1, "Cup", "Produce"],
+  ["Shredded Cheddar Cheese", 1, "Cup", "Dairy"],
+  ["4% Cottage Cheese", 6, "oz", "Dairy"],
+  ["Shredded White Cheddar Cheese", 3/4, "Cup", "Dairy"]
+];
+addAllIngredients(breakfastCasseroleIngredients, breakfastCasserole);
 
 //PRINT RECIPES
 //spicyThaiNoodles.printRecipe();
