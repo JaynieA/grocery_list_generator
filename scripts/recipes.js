@@ -1,3 +1,8 @@
+//add focus to input field on load
+$(document).ready(function() {
+  $(".form-control").focus();
+});
+
 var allMeals = [];
 
 //OBJECT CONSTRUCTOR FUNCTIONS
@@ -318,8 +323,9 @@ var brusselSproutPenneIngredients = [
   ["Salt", 0.5, "tsp", "Other"],
   ["Pepper", 0.5, "tsp", "Other"],
   ["Green Onions", 2, "item", "Produce"],
-  ["Golden Raisins", 0.5, "Cup", "Dry"],
-  ["Dry White Wine", 0.5, "Cup", "Other"]
+  ["Dried Cranberries", 0.5, "Cup", "Dry"],
+  ["Dry White Wine", 0.5, "Cup", "Other"],
+  ["Feta Cheese", 0.4, "Cup", "Dairy"]
 ];
 addAllIngredients(brusselSproutPenneIngredients, brusselSproutPenne);
 
@@ -333,7 +339,7 @@ var broccoliQuinoaCasseroleIngredients = [
   ["Arrowroot powder or Cornstarch", 2, "tsp", "Dry"],
   ["Spinach", 2, "Cup", "Produce"],
   ["Mozzarella Cheese", 15, "oz", "Dairy"],
-  ["Parmesan Cheese", 1/3, "Cup", "Dairy"],
+  ["Parmesan Cheese", (1/3), "Cup", "Dairy"],
   ["Broccoli Florets", 12, "oz", "Produce"],
   ["Green Onions", 3, "item", "Produce"]
 ];
@@ -346,34 +352,31 @@ var pantryPastaIngredients = [
   ["Olive Oil", 6, "tbsp", "Other"],
   ["Yellow Onion", 0.5, "item", "Produce"],
   ["Garlic", 2, "Cloves", "Produce"],
-  ["Crushed Red Pepper", 3/4, "tsp", "Other"],
-  ["Salt", 1/4, "tsp", "Other"],
+  ["Crushed Red Pepper", 0.75, "tsp", "Other"],
+  ["Salt", 0.25, "tsp", "Other"],
   ["Parsley", 3, "tbsp", "Produce"],
   ["Capers", 2, "tbsp", "Canned"],
   ["Lemon", 1, "item", "Produce"],
-  ["Spaghetti or Linguine Noodles", 3/4, "lb", "Dry"],
+  ["Spaghetti or Linguine Noodles", 0.75, "lb", "Dry"],
   ["Eggs", 3, "item", "Dairy"],
-  ["Parmesan", 1/2, "Cup", "Dairy"]
+  ["Parmesan", 0.5, "Cup", "Dairy"]
 ];
 addAllIngredients(pantryPastaIngredients, pantryPasta);
 
 //Make Tortilla Soup
 var tortillaSoup = new Recipe("Vegetarian Tortilla Soup", 2);
 var tortillaSoupIngredients = [
-  ["Poblano Pepper", 1, "item", "Produce"],
   ["Olive Oil", 1, "tbsp", "Other"],
   ["White Onion", 1, "item", "Produce"],
   ["Garlic", 2, "Cloves", "Produce"],
-  ["Jalapeno", 2, "item", "Produce"],
+  ["Jalapeno", 1, "item", "Produce"],
   ["Cumin", 1, "tsp", "Other"],
   ["Crushed Tomatos", 1, "14 oz Can", "Canned"],
   ["Vegetable Broth", 4, "Cup", "Canned"],
   ["Black Beans", 1, "15 oz. Can", "Canned"],
-  ["Corn Tortillas", 6, "item", "Dry"],
+  ["Corn Chips", 1, "Bag", "Dry"],
   ["Avocado", 1, "item", "Produce"],
-  ["Radish", 2, "item", "Produce"],
-  ["Queso Fresco", 2, "oz", "Dairy"],
-  ["Cilantro", 3, "tbsp", "Produce"],
+  ["Feta Cheese", 0.5, "Cup", "Dairy"],
   ["Lime", 1, "item", "Produce"]
 ];
 addAllIngredients(tortillaSoupIngredients, tortillaSoup);
@@ -404,5 +407,5 @@ var revealList =  function() {
   chooseWeeksMeals(numMeals);
   printWeeksMeals(weeksMeals);
   printGroceryList(weeksMeals);
-  return weeksMeals;
+  return false;
 };
