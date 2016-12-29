@@ -418,6 +418,11 @@ $(document).ready(function() {
 
 var init = function() {
   //get ingredients
+  getIngredients();
+}; // end init
+
+var getIngredients = function() {
+  console.log('in getIngredients');
   $.ajax({
     type: 'GET',
     url: '/ingredient',
@@ -428,4 +433,4 @@ var init = function() {
       console.log(err);
     } // end error
   }); // end ajax
-}; // end init
+}; // end getIngredients
