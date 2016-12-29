@@ -9,5 +9,6 @@ User inputs only one thing- the number of meals that they would like to shop for
 * SASS/CSS
 
 ###Stretch Goals
-* [ ] Add data persistence
+* [ ] Add data persistence using Node and Express
 * [ ] Allow user to add, change, disable, and delete recipes
+* [ ] Host App on Heroku
