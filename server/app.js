@@ -12,3 +12,6 @@ app.listen(PORT, function() {
 //routers
 var ingredient = require( '../routers/ingredient' );
 app.use('/ingredient', ingredient);
+
+var measurement = require( '../routers/measurement' );
+app.use('/measurement', measurement);
