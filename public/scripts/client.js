@@ -1,8 +1,3 @@
-//add focus to input field on load
-$(document).ready(function() {
-  $(".form-control").focus();
-});
-
 var allMeals = [];
 
 //OBJECT CONSTRUCTOR FUNCTIONS
@@ -403,7 +398,7 @@ weeksMeals = [];
 var revealList =  function() {
   $('.hideable').hide();
   $('.results').show();
-  var numMeals = $('#numMeals').val();
+  var numMeals = $('#numMealsIn').val();
   chooseWeeksMeals(numMeals);
   printWeeksMeals(weeksMeals);
   printGroceryList(weeksMeals);
@@ -417,8 +412,12 @@ $(document).ready(function() {
 }); // end doc ready
 
 var init = function() {
-  //get ingredients
+  console.log('in init');
+  //add focus to the form on load
+  $("#numMealsIn").focus();
+  //get ingredients and measurements
   getIngredients();
+  getMeasurements();
 }; // end init
 
 var getIngredients = function() {
@@ -434,3 +433,17 @@ var getIngredients = function() {
     } // end error
   }); // end ajax
 }; // end getIngredients
+
+var getMeasurements = function() {
+  console.log('in getMeasurements');
+  $.ajax({
+    type: 'GET',
+    url: '/measurement',
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getMeasurements
