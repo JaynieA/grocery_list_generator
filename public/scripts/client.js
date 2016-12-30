@@ -418,6 +418,8 @@ var init = function() {
   //get ingredients and measurements
   getIngredients();
   getMeasurements();
+  //TODO: move these function calls later
+  getRecipeIngredients(1);
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
 }; // end init
@@ -516,4 +518,38 @@ var getRecipeIngredients = function(recipeId) {
   }); // end ajax
 }; // end getRecipeIngredients
 
-getRecipeIngredients(1);
+var buildUrlParams = function(numbersArray) {
+  console.log('in buildUrlParams');
+  //set counter variable and params object
+  var params = {};
+  var count = 1;
+  //loop through array and add parameter for each number
+  for (var i = 0; i < numbersArray.length; i++) {
+    params['id'+count] = numbersArray[i];
+    count++;
+  } // end for
+  //add number of numbers in array to params
+  params.totalNum = numbersArray.length;
+  //return the param object
+  return params;
+}; // end buildUrlParams
+
+var getManyRecipeIngredients = function(arrayOfNumbers) {
+  console.log('in getManyRecipeIngredients: for id\s:', arrayOfNumbers);
+  var params = buildUrlParams(arrayOfNumbers);
+  //build url string
+  var urlString = '/joined/list?'+ $.param(params);
+  console.log(urlString);
+  $.ajax({
+    type: 'GET',
+    url: urlString,
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getManyRecipeIngredients
+
+getManyRecipeIngredients([7,5,1,2]);
