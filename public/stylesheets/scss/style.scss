@@ -67,4 +67,19 @@ ul {
       padding: 15px 0 5px;
     }
   }
+  .recipe-link {
+    padding: 10px;
+    transition: 0.2s ease;
+    margin-top: 3px;
+    span {
+      transition: 0.2s ease;
+      color: #57D478;
+      transform: scale(1.2, 1.2);
+    }
+    &:hover {
+      span {
+        color: white;
+      }
+    }
+  }
 }

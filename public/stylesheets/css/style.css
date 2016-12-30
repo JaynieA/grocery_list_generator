@@ -59,5 +59,15 @@ ul {
       color: white;
       text-align: center;
       padding: 15px 0 5px; }
+  .recipe .recipe-link {
+    padding: 10px;
+    transition: 0.2s ease;
+    margin-top: 3px; }
+    .recipe .recipe-link span {
+      transition: 0.2s ease;
+      color: #57D478;
+      transform: scale(1.2, 1.2); }
+    .recipe .recipe-link:hover span {
+      color: white; }
 
 /*# sourceMappingURL=style.css.map */

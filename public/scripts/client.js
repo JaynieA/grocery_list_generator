@@ -435,10 +435,11 @@ var displayRecipes = function(recipeArray) {
     var $recipe = $wrapper.children().last();
     //recipe title div
     $recipe.append('<div class="recipe-title"><p>' + recipeArray[i].name + '</p></div>');
-    //if the recipe link exists add a link next to the title
-    //TODO: finish the following logic to display recipe link
+    //if the recipe link exists, add a link next to the title
     if (recipeArray[i].reference_url !== null) {
-      //add a link or source
+      //add a link with info glyphicon
+      //TODO: make this more readable
+      $recipe.children().last().find('p').append('<a href="'+ recipeArray[i].reference_url +'" target="_blank" class="recipe-link"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>');
     } //end if
     //add css for the background image
     $recipe.css('background-image', 'url('+recipeArray[i].image_url+')');
