@@ -503,9 +503,10 @@ var toggleRecipeVisibility = function() {
 
 var getRecipeIngredients = function(recipeId) {
   console.log('in getRecipeIngredients');
+  var url = '/joined?id=' + recipeId;
   $.ajax({
     type: 'GET',
-    url: '/joined',
+    url: url,
     success: function(response) {
       console.log(response);
     }, // end success
