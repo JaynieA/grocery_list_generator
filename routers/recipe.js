@@ -3,21 +3,21 @@ var router = express.Router();
 var pg = require( 'pg' );
 var connection = require( '../modules/connection' );
 
-//gets total number of recipes
-router.get('/totalNum', function(req, res) {
+//get all recipe info
+router.get('/', function(req, res) {
+  var recipes = [];
   pg.connect(connection, function(err, client, done) {
     if (err) {
       console.log(err);
     } else {
-      var count;
-      var query = client.query('SELECT COUNT(id) FROM recipes');
+      var query = client.query('SELECT * FROM recipes');
       query.on('row', function(row) {
-        count = row;
-      }); // end on query
+        recipes.push(row);
+      }); // end query on
       query.on('end', function() {
         done();
-        res.send(count);
-      }); // query end
+        res.send({recipes: recipes});
+      }); // end query
     } // end else
   }); // end pg connect
 }); // end get
