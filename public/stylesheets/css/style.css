@@ -58,7 +58,8 @@ ul {
     .recipe .recipe-title p {
       color: white;
       text-align: center;
-      padding: 15px 0 5px; }
+      padding: 15px 0 5px;
+      text-transform: uppercase; }
   .recipe .recipe-link {
     padding: 10px;
     transition: 0.2s ease;

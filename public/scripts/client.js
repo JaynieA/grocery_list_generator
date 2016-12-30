@@ -395,7 +395,8 @@ addAllIngredients(breakfastCasseroleIngredients, breakfastCasserole);
 
 weeksMeals = [];
 
-var revealList =  function() {
+var revealList =  function(e) {
+  e.preventDefault();
   $('.hideable').hide();
   $('.results').show();
   var numMeals = $('#numMealsIn').val();
@@ -492,7 +493,7 @@ var getRecipes = function(recipeNumber) {
 var toggleRecipeVisibility = function() {
   console.log('in toggleRecipeVisibility');
   //toggle visibility of resipes on button click
-  $('.recipe-display').toggle();
+  $('.recipe-display').fadeToggle('fast');
   console.log($('#displayRecipesButton').text());
   if ($('#displayRecipesButton').text() === 'View All Recipes') {
     $('#displayRecipesButton').text('Hide Recipes');

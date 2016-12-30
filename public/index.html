@@ -27,11 +27,11 @@
 
     <div class="container">
         <hr class="hideable">
-        <form class="hideable" >
+        <form class="hideable" onsubmit="revealList(event)">
             <div class="form-group">
                 <label class="control-label" for="numMealsIn">How many meals will you be shopping for?</label>
-                <input id="numMealsIn" type="number" class="form-control" placeholder="Number of meals">
-                <button class="btn btn-success" type="submit" name="submit" onclick="return revealList();">Generate List</button>
+                <input id="numMealsIn" type="number" class="form-control" placeholder="Number of meals" required>
+                <button class="btn btn-success" type="submit" name="submit">Generate List</button>
             </div>
         </form>
 
