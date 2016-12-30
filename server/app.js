@@ -15,3 +15,6 @@ app.use('/ingredient', ingredient);
 
 var measurement = require( '../routers/measurement' );
 app.use('/measurement', measurement);
+
+var recipe = require( '../routers/recipe' );
+app.use('/recipe', recipe);

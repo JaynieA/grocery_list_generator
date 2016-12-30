@@ -418,7 +418,32 @@ var init = function() {
   //get ingredients and measurements
   getIngredients();
   getMeasurements();
+  //Event Listeners
+  $('#displayRecipesButton').on('click', getRecipes);
 }; // end init
+
+var displayRecipes = function(recipeArray) {
+  console.log('in displayRecipes', recipeArray);
+  toggleRecipeVisibility();
+  var $recipeDiv = $('#recipeDisplayDiv');
+  //clear html
+  $recipeDiv.html('');
+  //for each recipe in the array, append a div displaying its information
+  for (var i = 0; i < recipeArray.length; i++) {
+    $recipeDiv.append('<div class="col-sm-3"></div>');
+    var $wrapper = $recipeDiv.children().last().append('<div class="recipe"></div>');
+    var $recipe = $wrapper.children().last();
+    //recipe title div
+    $recipe.append('<div class="recipe-title"><p>' + recipeArray[i].name + '</p></div>');
+    //if the recipe link exists add a link next to the title
+    //TODO: finish the following logic to display recipe link
+    if (recipeArray[i].reference_url !== null) {
+      //add a link or source
+    } //end if
+    //add css for the background image
+    $recipe.css('background-image', 'url('+recipeArray[i].image_url+')');
+  } // end for
+}; // end displayRecipes
 
 var getIngredients = function() {
   console.log('in getIngredients');
@@ -447,3 +472,30 @@ var getMeasurements = function() {
     } // end error
   }); // end ajax
 }; // end getMeasurements
+
+var getRecipes = function(recipeNumber) {
+  console.log('in getRecipes');
+  $.ajax({
+    type: 'GET',
+    url: '/recipe',
+    success: function(response) {
+      console.log(response);
+      displayRecipes(response.recipes);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getRecipe
+
+var toggleRecipeVisibility = function() {
+  console.log('in toggleRecipeVisibility');
+  //toggle visibility of resipes on button click
+  $('.recipe-display').toggle();
+  console.log($('#displayRecipesButton').text());
+  if ($('#displayRecipesButton').text() === 'View All Recipes') {
+    $('#displayRecipesButton').text('Hide Recipes');
+  } else {
+    $('#displayRecipesButton').text('View All Recipes');
+  } // end else
+}; // end toggleRecipeVisibility
