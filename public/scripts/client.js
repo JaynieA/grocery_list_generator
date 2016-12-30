@@ -234,7 +234,6 @@ var lasagnaIngredients = [
   ["Long Lasagna Noodles", 9 , "item", "Dry"],
   ["Onion", 0.15, "item", "Produce"],
   ["Mushrooms", 5, "oz", "Produce"],
-  ["Red Bell Pepper", 0.5, "item", "Produce"],
   ["Garlic", 1, "Clove", "Produce"],
   ["Olive Oil", 1, "tbsp", "Other"],
   ["Ricotta Cheese", 15, "oz", "Dairy"],
@@ -501,3 +500,19 @@ var toggleRecipeVisibility = function() {
     $('#displayRecipesButton').text('View All Recipes');
   } // end else
 }; // end toggleRecipeVisibility
+
+var getRecipeIngredients = function(recipeId) {
+  console.log('in getRecipeIngredients');
+  $.ajax({
+    type: 'GET',
+    url: '/joined',
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getRecipeIngredients
+
+getRecipeIngredients(1);

@@ -18,3 +18,6 @@ app.use('/measurement', measurement);
 
 var recipe = require( '../routers/recipe' );
 app.use('/recipe', recipe);
+
+var joined = require( '../routers/joined' );
+app.use('/joined', joined);
