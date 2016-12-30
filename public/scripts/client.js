@@ -418,6 +418,7 @@ var init = function() {
   //get ingredients and measurements
   getIngredients();
   getMeasurements();
+  getNumRecipes();
 }; // end init
 
 var getIngredients = function() {
@@ -447,3 +448,17 @@ var getMeasurements = function() {
     } // end error
   }); // end ajax
 }; // end getMeasurements
+
+var getNumRecipes = function(){
+  console.log('in getNumRecipes');
+  $.ajax({
+    type: 'GET',
+    url: '/recipe/totalNum',
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getNumRecipes
