@@ -35,6 +35,7 @@ router.get('/', function(req,res) {
 
 //get ingredients for many recipes
 router.get('/list', function(req,res) {
+  //TODO: export the following loops into modules
   numRecipes = req.query.totalNum;
   //get the id's from the parameters in url
   idArray = [];
@@ -77,8 +78,6 @@ router.get('/list', function(req,res) {
       }); // end query end
     } // end else
   }); // end pg connect
-
-  //res.send(numRecipes);
 }); // and get
 
 module.exports = router;
