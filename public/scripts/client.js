@@ -159,13 +159,48 @@ var getManyRecipeIngredients = function(arrayOfNumbers) {
     url: urlString,
     success: function(response) {
       console.log(response);
-      appendIngredientsToListSections(condenseIngredientObjects(response.ingredientList));
+      //TODO: condense the following process by nexting functions
+      var condensedIngredients = condenseIngredientObjects(response.ingredientList);
+      var formattedIngredients = formatIngredientObjects(condensedIngredients);
+      appendIngredientsToListSections(formattedIngredients);
     }, // end success
     error: function(err) {
       console.log(err);
     } // end error
   }); // end ajax
 }; // end getManyRecipeIngredients
+
+var formatIngredientObjects = function(ingredientsArray) {
+  console.log('in formatIngredientObjects');
+  //TODO: Break extract this into 3 separate functions (plurality, fraction, measurement)
+  for (var i = 0; i < ingredientsArray.length; i++) {
+    var ingredient = ingredientsArray[i];
+
+    //If the ingredient amount > 1, add an 's' if/where appropriate to read as plural
+    if (ingredient.amount > 1) {
+      //Make the measurement plural with s
+      if (ingredient.measurement != 'Tbsp' && ingredient.measurement != 'Oz' && ingredient.measurement != 'Tsp' && ingredient.measurement != 'Inch') {
+        ingredient.measurement += 's';
+      } // end if
+      //Make the measurement plural with 'es'
+      if (ingredient.measurement === 'Inch') {
+        ingredient.measurement += 'es';
+      } // end if
+      //TODO: add plurality to ingredients with item measurement
+    } // end if
+
+    //If the measurement is 'Item', set it's measurement to blank
+    if (ingredient.measurement === 'Item' || ingredient.measurement === 'Items') {
+      ingredient.measurement = '';
+    } // end if
+
+    //Convert the amount to be a fraction using fraction.min.js
+    var amount = new Fraction(ingredient.amount);
+    ingredient.amount = amount.toFraction(true);
+  } // end for
+  //Return the formatted ingredientsArray
+  return ingredientsArray;
+}; // end formatIngredientObjects
 
 var getMeasurements = function() {
   console.log('in getMeasurements');
