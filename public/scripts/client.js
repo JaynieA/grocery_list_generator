@@ -306,6 +306,10 @@ addAllIngredients(breakfastCasseroleIngredients, breakfastCasserole);
 
 
 // ~~~~ TESTING ROUTES ~~~~~~
+//TODO: clean up init
+//TODO: add the rest of the recipes to the database
+//TODO: clarify the function names or order of calls on user form submit
+//TODO: condense ingredient objecs before displaying them on list
 
 $(document).ready(function() {
   init();
@@ -362,8 +366,8 @@ var displayList =  function(e) {
   //hide the form, show the list
   $('.hideable').hide();
   $('.results').show();
-  var numMeals = $('#numMealsIn').val();
-  getManyRecipeIngredients(makeRecipeIdArray(numMeals));
+  // get total number of recipes in database, getManyRecipeIngredients as a callback
+  getTotalRecipeCount();
 }; // end displayList
 
 var displayRecipes = function(recipeArray) {
@@ -463,6 +467,17 @@ var getMeasurements = function() {
   }); // end ajax
 }; // end getMeasurements
 
+var getRandomInt = function(maxNum) {
+  console.log('in getRandomInt');
+  //set min value to 1
+  min = Math.ceil(1);
+  //set max value the total number of recipes in database
+  max = Math.floor(maxNum+1);
+  //choose a random number
+  num = Math.floor(Math.random()*(max-min))+min;
+  return num;
+}; //end getRandomInt
+
 var getRecipeIngredients = function(recipeId) {
   console.log('in getRecipeIngredients');
   var url = '/joined?id=' + recipeId;
@@ -499,14 +514,33 @@ var getTotalRecipeCount = function() {
     type: 'GET',
     url: '/recipe/count',
     success: function(response) {
-      var recipeCount = response.count;
+      var recipeCount = Number(response.count);
       console.log('recipe count:',recipeCount);
+      //get user input for number of meals requested
+      var numMeals = $('#numMealsIn').val();
+      //get ingredients for meals
+      getManyRecipeIngredients(makeRecipeIdArray(numMeals, recipeCount));
     }, // end success
     error: function(err) {
       console.log(err);
     } // end error
   }); // end ajax
 }; // end getTotalRecipeCount
+
+var makeRecipeIdArray = function(amount, maxNum){
+  console.log('in makeRecipeIdArray');
+  numbers = [];
+  //choose a random number for each number of meals requested by user
+  while (numbers.length < amount){
+    num = getRandomInt(maxNum);
+    if ($.inArray(num, numbers) === -1) {
+      //push random number into numbers array
+      numbers.push(num);
+    } // end if
+  } // end while
+  //console.log('chosen numbers:', numbers);
+  return numbers;
+}; //end makeRecipeIdArray
 
 var toggleRecipeVisibility = function() {
   console.log('in toggleRecipeVisibility');
@@ -520,32 +554,10 @@ var toggleRecipeVisibility = function() {
   } // end else
 }; // end toggleRecipeVisibility
 
-///////////
 
-//TODO: call getTotalRecipeCount in here
-var makeRecipeIdArray = function(amount){
-  console.log('in makeRecipeIdArray');
-  numbers = [];
-  //choose a random number for each number of meals requested by user
-  while (numbers.length < amount){
-    num = getRandomInt();
-    if ($.inArray(num, numbers) === -1) {
-      //push random number into numbers array
-      numbers.push(num);
-    } // end if
-  } // end while
-  //console.log('chosen numbers:', numbers);
-  return numbers;
-}; //end makeRecipeIdArray
 
-var getRandomInt = function() {
-  console.log('in getRandomInt');
-  min = Math.ceil(0);
-  //TODO: CHANGE allMeals TO ACTUAL NUMBER OF MEALS IN DATABASE
-  max = Math.floor(allMeals.length);
-  num = Math.floor(Math.random()*(max-min))+min;
-  return num;
-}; //end getRandomInt
+
+
 
 
 
