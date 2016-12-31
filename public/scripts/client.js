@@ -41,89 +41,9 @@ var addAllIngredients = function(completeIngredientsArray, recipeObject){
   });
 }; //end addAllIngredients
 
-var chooseWeeksMeals = function(amount){
-  numbers = [];
-  while (numbers.length<amount){
-    num = getRandomInt();
-    if ($.inArray(num, numbers) === -1) {
-      numbers.push(num);
-    }
-  }
-  for (var i = 0; i <numbers.length; i++) {
-    weeksMeals.push(allMeals[numbers[i]]);
-  }
-  return weeksMeals;
-}; //end chooseWeeksMeals
 
-var getRandomInt = function() {
-  min = Math.ceil(0);
-  max = Math.floor(allMeals.length);
-  num = Math.floor(Math.random()*(max-min))+min;
-  return num;
-}; //end getRandomInt
 
-var printGroceryList= function(mealsArray){
-  groceryList = [];
-  //add all ingredients in mealsArray objects to groceryList array
-  for (i = 0; i < mealsArray.length; i++){
-    for (x = 0; x < mealsArray[i].ingredients.length; x++){
-      groceryList.push(mealsArray[i].ingredients[x]);
-    }
-  }
-  //Condense grocery list if an ingredient item and measurement are the same
-  var output = [];
-  groceryList.forEach(function(value) {
-      var existing = output.filter(function(v, i) {
-          return v.item == value.item && v.measurement == value.measurement;
-      });
-      if(existing.length) {
-          var existingIndex = output.indexOf(existing[0]);
-          output[existingIndex].amount = output[existingIndex].amount+value.amount;
-      }
-      else {
-          if(typeof value.amount == 'number')
-              value.amount = value.amount;
-          output.push(value);
-      }
-  });
-  //Print formatted grocery list
-  //console.log("\n%cGrocery List: ", "font-size: large");
-  for (var i = 0; i < output.length; i++) {
-    var amount = new Fraction(output[i].amount);
-    var fractionAmt = amount.toFraction(true);
-    if (output[i].measurement === "item") {
-      output[i].measurement = '';
-    }
-    //$('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
-    //Iterate through categories and assign to DOM element
-    var categories = [
-      ["Produce", "#produce"],
-      ["Frozen", '#frozen'],
-      ['Dairy', '#dairy'],
-      ['Meat', '#meat'],
-      ['Other', '#other'],
-      ['Dry', '#dry'],
-      ['Canned', '#canned']
-    ];
-    for (var z = 0; z < categories.length; z++) {
-      var category = categories[z][0];
-      var id = categories[z][1];
-      if (output[i].category === category) {
-        $(id).html($(id).html()+"<li>"+ fractionAmt+" "+output[i].measurement+" "+output[i].item+"</li>");
-      }
-    }
-  }
-  return output;
-}; //end makeGroceryList
 
-var printWeeksMeals = function(mealsArray){
-  //console.log("\n%cThis week's meals: ", "font-size: large");
-  for (var i = 0; i < mealsArray.length; i++){
-    //console.log(mealsArray[i].name);
-    $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
-  }
-}; //end printWeeksMeals
 
 //MAKE RECIPE OBJECTS
 //Make Brown rice stir fry recipe
@@ -392,18 +312,7 @@ addAllIngredients(breakfastCasseroleIngredients, breakfastCasserole);
 //spicyThaiNoodles.printRecipe();
 //macNcheese.printRecipe();
 
-weeksMeals = [];
 
-var revealList =  function(e) {
-  e.preventDefault();
-  $('.hideable').hide();
-  $('.results').show();
-  var numMeals = $('#numMealsIn').val();
-  chooseWeeksMeals(numMeals);
-  printWeeksMeals(weeksMeals);
-  printGroceryList(weeksMeals);
-  return false;
-};
 
 // ~~~~ TESTING ROUTES ~~~~~~
 
@@ -421,6 +330,7 @@ var init = function() {
   //get ingredients and measurements
   getIngredients();
   getMeasurements();
+  getSections();
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
 }; // end init
@@ -464,6 +374,20 @@ var displayRecipes = function(recipeArray) {
     $recipe.css('background-image', 'url('+recipeArray[i].image_url+')');
   } // end for
 }; // end displayRecipes
+
+var getSections = function(){
+  console.log('in getSections');
+  $.ajax({
+    type: 'GET',
+    url: '/section',
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getSections
 
 var getIngredients = function() {
   console.log('in getIngredients');
@@ -551,3 +475,102 @@ var toggleRecipeVisibility = function() {
     $('#displayRecipesButton').text('View All Recipes');
   } // end else
 }; // end toggleRecipeVisibility
+
+///////////
+
+var chooseWeeksMeals = function(amount){
+  numbers = [];
+  while (numbers.length<amount){
+    num = getRandomInt();
+    if ($.inArray(num, numbers) === -1) {
+      numbers.push(num);
+    }
+  }
+  for (var i = 0; i <numbers.length; i++) {
+    weeksMeals.push(allMeals[numbers[i]]);
+  }
+  return weeksMeals;
+}; //end chooseWeeksMeals
+
+var getRandomInt = function() {
+  min = Math.ceil(0);
+  max = Math.floor(allMeals.length);
+  num = Math.floor(Math.random()*(max-min))+min;
+  return num;
+}; //end getRandomInt
+
+var printGroceryList= function(mealsArray){
+  groceryList = [];
+  //add all ingredients in mealsArray objects to groceryList array
+  for (i = 0; i < mealsArray.length; i++){
+    for (x = 0; x < mealsArray[i].ingredients.length; x++){
+      groceryList.push(mealsArray[i].ingredients[x]);
+    }
+  }
+  //Condense grocery list if an ingredient item and measurement are the same
+  var output = [];
+  groceryList.forEach(function(value) {
+      var existing = output.filter(function(v, i) {
+          return v.item == value.item && v.measurement == value.measurement;
+      });
+      if(existing.length) {
+          var existingIndex = output.indexOf(existing[0]);
+          output[existingIndex].amount = output[existingIndex].amount+value.amount;
+      }
+      else {
+          if(typeof value.amount == 'number')
+              value.amount = value.amount;
+          output.push(value);
+      }
+  });
+  //Print formatted grocery list
+  //console.log("\n%cGrocery List: ", "font-size: large");
+  for (var i = 0; i < output.length; i++) {
+    var amount = new Fraction(output[i].amount);
+    var fractionAmt = amount.toFraction(true);
+    if (output[i].measurement === "item") {
+      output[i].measurement = '';
+    }
+    //$('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
+    //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+    //Iterate through categories and assign to DOM element
+    var categories = [
+      ["Produce", "#produce"],
+      ["Frozen", '#frozen'],
+      ['Dairy', '#dairy'],
+      ['Meat', '#meat'],
+      ['Other', '#other'],
+      ['Dry', '#dry'],
+      ['Canned', '#canned']
+    ];
+    for (var z = 0; z < categories.length; z++) {
+      var category = categories[z][0];
+      var id = categories[z][1];
+      if (output[i].category === category) {
+        $(id).html($(id).html()+"<li>"+ fractionAmt+" "+output[i].measurement+" "+output[i].item+"</li>");
+      }
+    }
+  }
+  return output;
+}; //end makeGroceryList
+
+var printWeeksMeals = function(mealsArray){
+  //console.log("\n%cThis week's meals: ", "font-size: large");
+  for (var i = 0; i < mealsArray.length; i++){
+    //console.log(mealsArray[i].name);
+    $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
+  }
+}; //end printWeeksMeals
+
+weeksMeals = [];
+
+var revealList =  function(e) {
+  e.preventDefault();
+  $('.hideable').hide();
+  $('.results').show();
+  var numMeals = $('#numMealsIn').val();
+  chooseWeeksMeals(numMeals);
+  printWeeksMeals(weeksMeals);
+  printGroceryList(weeksMeals);
+  return false;
+};

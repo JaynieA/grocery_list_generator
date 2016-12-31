@@ -21,3 +21,6 @@ app.use('/recipe', recipe);
 
 var joined = require( '../routers/joined' );
 app.use('/joined', joined);
+
+var section = require( '../routers/section' );
+app.use('/section', section);
