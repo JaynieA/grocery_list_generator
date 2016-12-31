@@ -22,4 +22,24 @@ router.get('/', function(req, res) {
   }); // end pg connect
 }); // end get
 
+//get total number of recipes in database
+router.get('/count', function(req, res) {
+  var count;
+  //connect to database
+  pg.connect(connection, function(err, client, done) {
+    if(err) {
+      console.log(err);
+    } else {
+      var query = client.query('SELECT COUNT(id) FROM recipes');
+      query.on('row', function(row) {
+        count = row;
+      }); // end on query
+      query.on('end', function() {
+        done();
+        res.send(count);
+      }); // end query end
+    } // end else
+  }); // end pg connect
+}); // end get
+
 module.exports = router;

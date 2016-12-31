@@ -41,10 +41,6 @@ var addAllIngredients = function(completeIngredientsArray, recipeObject){
   });
 }; //end addAllIngredients
 
-
-
-
-
 //MAKE RECIPE OBJECTS
 //Make Brown rice stir fry recipe
 var brownRiceStirFry = new Recipe("Brown Rice Stir Fry", 3);
@@ -321,15 +317,27 @@ var init = function() {
   $("#numMealsIn").focus();
   //TODO: move these function calls later
   getRecipeIngredients(1);
-  //getManyRecipeIngredients([7,5,1,2]);
   //get ingredients and measurements
   getIngredients();
   getMeasurements();
   //TODO: keep the following
+  getTotalRecipeCount();
   getSections();
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
 }; // end init
+
+var appendIngredientsToListSections = function(ingredientsArray) {
+  console.log('in appendIngredientsToListSections');
+  //append the ingredient to the appropriate section list
+  for (var i = 0; i < ingredientsArray.length; i++) {
+    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
+    var amount = ingredientsArray[i].amount;
+    var ingredient = ingredientsArray[i].ingredient;
+    var measurement = ingredientsArray[i].measurement;
+    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
+  } // end for
+}; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
   console.log('in buildUrlParams');
@@ -346,6 +354,17 @@ var buildUrlParams = function(numbersArray) {
   //return the param object
   return params;
 }; // end buildUrlParams
+
+var displayList =  function(e) {
+  console.log('in displayList');
+  //prevent page refresh on form submit
+  e.preventDefault();
+  //hide the form, show the list
+  $('.hideable').hide();
+  $('.results').show();
+  var numMeals = $('#numMealsIn').val();
+  getManyRecipeIngredients(makeRecipeIdArray(numMeals));
+}; // end displayList
 
 var displayRecipes = function(recipeArray) {
   console.log('in displayRecipes', recipeArray);
@@ -474,6 +493,21 @@ var getRecipes = function(recipeNumber) {
   }); // end ajax
 }; // end getRecipe
 
+var getTotalRecipeCount = function() {
+  console.log('in getTotalRecipeCount');
+  $.ajax({
+    type: 'GET',
+    url: '/recipe/count',
+    success: function(response) {
+      var recipeCount = response.count;
+      console.log('recipe count:',recipeCount);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getTotalRecipeCount
+
 var toggleRecipeVisibility = function() {
   console.log('in toggleRecipeVisibility');
   //toggle visibility of resipes on button click
@@ -488,6 +522,7 @@ var toggleRecipeVisibility = function() {
 
 ///////////
 
+//TODO: call getTotalRecipeCount in here
 var makeRecipeIdArray = function(amount){
   console.log('in makeRecipeIdArray');
   numbers = [];
@@ -506,24 +541,15 @@ var makeRecipeIdArray = function(amount){
 var getRandomInt = function() {
   console.log('in getRandomInt');
   min = Math.ceil(0);
+  //TODO: CHANGE allMeals TO ACTUAL NUMBER OF MEALS IN DATABASE
   max = Math.floor(allMeals.length);
   num = Math.floor(Math.random()*(max-min))+min;
   return num;
 }; //end getRandomInt
 
-var appendIngredientsToListSections = function(ingredientsArray) {
-  console.log('in appendIngredientsToListSections', ingredientsArray);
-  //append the ingredient to the appropriate section list
-  for (var i = 0; i < ingredientsArray.length; i++) {
-    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
-    var amount = ingredientsArray[i].amount;
-    var ingredient = ingredientsArray[i].ingredient;
-    var measurement = ingredientsArray[i].measurement;
-    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
-  } // end for
-}; // end appendIngredientsToListSections
 
-///keep above here
+
+//OLD FUNCTIONS
 
 // var printGroceryList= function(mealsArray){
 //   console.log('in printGroceryList');
@@ -581,23 +607,13 @@ var appendIngredientsToListSections = function(ingredientsArray) {
 //   return output;
 // }; //end makeGroceryList
 
-var printWeeksMeals = function(mealsArray){
-  console.log('in printWeeksMeals');
-  //console.log("\n%cThis week's meals: ", "font-size: large");
-  for (var i = 0; i < mealsArray.length; i++){
-    //console.log(mealsArray[i].name);
-    $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
-  } // end for
-}; //end printWeeksMeals
+// var printWeeksMeals = function(mealsArray){
+//   console.log('in printWeeksMeals');
+//   //console.log("\n%cThis week's meals: ", "font-size: large");
+//   for (var i = 0; i < mealsArray.length; i++){
+//     //console.log(mealsArray[i].name);
+//     $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
+//   } // end for
+// }; //end printWeeksMeals
 
 //weeksMeals = [];
-
-var displayList =  function(e) {
-  console.log('in displayList');
-  //prevent page refresh on form submit
-  e.preventDefault();
-  $('.hideable').hide();
-  $('.results').show();
-  var numMeals = $('#numMealsIn').val();
-  getManyRecipeIngredients(makeRecipeIdArray(numMeals));
-};
