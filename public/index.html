@@ -27,7 +27,7 @@
 
     <div class="container">
         <hr class="hideable">
-        <form class="hideable" onsubmit="revealList(event)">
+        <form class="hideable" onsubmit="displayList(event)">
             <div class="form-group">
                 <label class="control-label" for="numMealsIn">How many meals will you be shopping for?</label>
                 <input id="numMealsIn" type="number" class="form-control" placeholder="Number of meals" required>
@@ -46,7 +46,9 @@
             <div id="meals" class="text-center"></div>
             <hr>
             <h3>Grocery List:</h3>
-            <div class="col-xs-3">
+            <div id="sectionsDiv"></div>
+
+            <!-- <div class="col-xs-3">
                 <h4>Produce</h4>
                 <ul id="produce" class="text-center"></ul>
             </div>
@@ -67,7 +69,7 @@
                 <ul id="other" class="text-center"></ul>
                 <h4>Frozen</h4>
                 <ul id="frozen" class="text-center"></ul>
-            </div>
+            </div> -->
         </div>
     </div>
 

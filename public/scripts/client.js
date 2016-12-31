@@ -308,11 +308,6 @@ var breakfastCasseroleIngredients = [
 ];
 addAllIngredients(breakfastCasseroleIngredients, breakfastCasserole);
 
-//PRINT RECIPES
-//spicyThaiNoodles.printRecipe();
-//macNcheese.printRecipe();
-
-
 
 // ~~~~ TESTING ROUTES ~~~~~~
 
@@ -326,10 +321,11 @@ var init = function() {
   $("#numMealsIn").focus();
   //TODO: move these function calls later
   getRecipeIngredients(1);
-  getManyRecipeIngredients([7,5,1,2]);
+  //getManyRecipeIngredients([7,5,1,2]);
   //get ingredients and measurements
   getIngredients();
   getMeasurements();
+  //TODO: keep the following
   getSections();
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
@@ -375,6 +371,18 @@ var displayRecipes = function(recipeArray) {
   } // end for
 }; // end displayRecipes
 
+var generateSectionElements = function(sectionsArray) {
+  console.log('in generateSectionElements');
+  for (var i = 0; i < sectionsArray.length; i++) {
+    //append a div for each section
+    $('#sectionsDiv').append('<div class="col-sm-3"></div>');
+    var $section = $('#sectionsDiv').children().last();
+    //to that div, append a header and a list- the list with an id of *Section*Ingredients
+    $section.append('<h4>' + sectionsArray[i].section + '</h4>');
+    $section.append('<ul id="' + sectionsArray[i].section + 'Ingredients" class="text-center"></ul>');
+  } // end for
+}; // end generateSectionDivs
+
 var getSections = function(){
   console.log('in getSections');
   $.ajax({
@@ -382,6 +390,7 @@ var getSections = function(){
     url: '/section',
     success: function(response) {
       console.log(response);
+      generateSectionElements(response.sections);
     }, // end success
     error: function(err) {
       console.log(err);
@@ -412,7 +421,8 @@ var getManyRecipeIngredients = function(arrayOfNumbers) {
     type: 'GET',
     url: urlString,
     success: function(response) {
-      console.log(response);
+      //console.log(response);
+      appendIngredientsToListSections(response.ingredientList);
     }, // end success
     error: function(err) {
       console.log(err);
@@ -478,99 +488,116 @@ var toggleRecipeVisibility = function() {
 
 ///////////
 
-var chooseWeeksMeals = function(amount){
+var makeRecipeIdArray = function(amount){
+  console.log('in makeRecipeIdArray');
   numbers = [];
-  while (numbers.length<amount){
+  //choose a random number for each number of meals requested by user
+  while (numbers.length < amount){
     num = getRandomInt();
     if ($.inArray(num, numbers) === -1) {
+      //push random number into numbers array
       numbers.push(num);
-    }
-  }
-  for (var i = 0; i <numbers.length; i++) {
-    weeksMeals.push(allMeals[numbers[i]]);
-  }
-  return weeksMeals;
-}; //end chooseWeeksMeals
+    } // end if
+  } // end while
+  //console.log('chosen numbers:', numbers);
+  return numbers;
+}; //end makeRecipeIdArray
 
 var getRandomInt = function() {
+  console.log('in getRandomInt');
   min = Math.ceil(0);
   max = Math.floor(allMeals.length);
   num = Math.floor(Math.random()*(max-min))+min;
   return num;
 }; //end getRandomInt
 
-var printGroceryList= function(mealsArray){
-  groceryList = [];
-  //add all ingredients in mealsArray objects to groceryList array
-  for (i = 0; i < mealsArray.length; i++){
-    for (x = 0; x < mealsArray[i].ingredients.length; x++){
-      groceryList.push(mealsArray[i].ingredients[x]);
-    }
-  }
-  //Condense grocery list if an ingredient item and measurement are the same
-  var output = [];
-  groceryList.forEach(function(value) {
-      var existing = output.filter(function(v, i) {
-          return v.item == value.item && v.measurement == value.measurement;
-      });
-      if(existing.length) {
-          var existingIndex = output.indexOf(existing[0]);
-          output[existingIndex].amount = output[existingIndex].amount+value.amount;
-      }
-      else {
-          if(typeof value.amount == 'number')
-              value.amount = value.amount;
-          output.push(value);
-      }
-  });
-  //Print formatted grocery list
-  //console.log("\n%cGrocery List: ", "font-size: large");
-  for (var i = 0; i < output.length; i++) {
-    var amount = new Fraction(output[i].amount);
-    var fractionAmt = amount.toFraction(true);
-    if (output[i].measurement === "item") {
-      output[i].measurement = '';
-    }
-    //$('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
-    //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
-    //Iterate through categories and assign to DOM element
-    var categories = [
-      ["Produce", "#produce"],
-      ["Frozen", '#frozen'],
-      ['Dairy', '#dairy'],
-      ['Meat', '#meat'],
-      ['Other', '#other'],
-      ['Dry', '#dry'],
-      ['Canned', '#canned']
-    ];
-    for (var z = 0; z < categories.length; z++) {
-      var category = categories[z][0];
-      var id = categories[z][1];
-      if (output[i].category === category) {
-        $(id).html($(id).html()+"<li>"+ fractionAmt+" "+output[i].measurement+" "+output[i].item+"</li>");
-      }
-    }
-  }
-  return output;
-}; //end makeGroceryList
+var appendIngredientsToListSections = function(ingredientsArray) {
+  console.log('in appendIngredientsToListSections', ingredientsArray);
+  //append the ingredient to the appropriate section list
+  for (var i = 0; i < ingredientsArray.length; i++) {
+    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
+    var amount = ingredientsArray[i].amount;
+    var ingredient = ingredientsArray[i].ingredient;
+    var measurement = ingredientsArray[i].measurement;
+    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
+  } // end for
+}; // end appendIngredientsToListSections
+
+///keep above here
+
+// var printGroceryList= function(mealsArray){
+//   console.log('in printGroceryList');
+//   groceryList = [];
+//   //add all ingredients in mealsArray objects to groceryList array
+//   for (i = 0; i < mealsArray.length; i++){
+//     for (x = 0; x < mealsArray[i].ingredients.length; x++){
+//       groceryList.push(mealsArray[i].ingredients[x]);
+//     }
+//   }
+//   //Condense grocery list if an ingredient item and measurement are the same
+//   var output = [];
+//   groceryList.forEach(function(value) {
+//       var existing = output.filter(function(v, i) {
+//           return v.item == value.item && v.measurement == value.measurement;
+//       });
+//       if(existing.length) {
+//           var existingIndex = output.indexOf(existing[0]);
+//           output[existingIndex].amount = output[existingIndex].amount+value.amount;
+//       }
+//       else {
+//           if(typeof value.amount == 'number')
+//               value.amount = value.amount;
+//           output.push(value);
+//       }
+//   });
+//   //Print formatted grocery list
+//   //console.log("\n%cGrocery List: ", "font-size: large");
+//   for (var i = 0; i < output.length; i++) {
+//     var amount = new Fraction(output[i].amount);
+//     var fractionAmt = amount.toFraction(true);
+//     if (output[i].measurement === "item") {
+//       output[i].measurement = '';
+//     }
+//     //$('#groceryList').html($('#groceryList').html()+"<li>"+ output[i].amount+" "+output[i].measurement+" "+output[i].item+"</li>");
+//     //console.log(output[i].amount+" "+output[i].measurement+" "+output[i].item);
+//     //Iterate through categories and assign to DOM element
+//     var categories = [
+//       ["Produce", "#produce"],
+//       ["Frozen", '#frozen'],
+//       ['Dairy', '#dairy'],
+//       ['Meat', '#meat'],
+//       ['Other', '#other'],
+//       ['Dry', '#dry'],
+//       ['Canned', '#canned']
+//     ];
+//     for (var z = 0; z < categories.length; z++) {
+//       var category = categories[z][0];
+//       var id = categories[z][1];
+//       if (output[i].category === category) {
+//         $(id).html($(id).html()+"<li>"+ fractionAmt+" "+output[i].measurement+" "+output[i].item+"</li>");
+//       }
+//     }
+//   }
+//   return output;
+// }; //end makeGroceryList
 
 var printWeeksMeals = function(mealsArray){
+  console.log('in printWeeksMeals');
   //console.log("\n%cThis week's meals: ", "font-size: large");
   for (var i = 0; i < mealsArray.length; i++){
     //console.log(mealsArray[i].name);
     $('#meals').html($('#meals').html()+"<p>"+mealsArray[i].name+"</p>");
-  }
+  } // end for
 }; //end printWeeksMeals
 
-weeksMeals = [];
+//weeksMeals = [];
 
-var revealList =  function(e) {
+var displayList =  function(e) {
+  console.log('in displayList');
+  //prevent page refresh on form submit
   e.preventDefault();
   $('.hideable').hide();
   $('.results').show();
   var numMeals = $('#numMealsIn').val();
-  chooseWeeksMeals(numMeals);
-  printWeeksMeals(weeksMeals);
-  printGroceryList(weeksMeals);
-  return false;
+  getManyRecipeIngredients(makeRecipeIdArray(numMeals));
 };
