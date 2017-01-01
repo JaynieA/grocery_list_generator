@@ -1,7 +1,6 @@
 var express = require( 'express' );
 var router = express.Router();
 var pg = require( 'pg' );
-var bodyParser = require( 'body-parser' );
 var connection = require('../modules/connection');
 
 //get all ingredients for one recipe

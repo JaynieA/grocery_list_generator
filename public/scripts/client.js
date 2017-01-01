@@ -1,6 +1,5 @@
 //TODO: sort list display
 //TODO: add functionality to 'Start over' button
-//TODO: take body-parser out of routes
 //TODO: add the rest of the recipes to the database
 //TODO: clarify the function names or order of calls on user form submit
 //TODO: validate/fix what happens if user needs more recipes than exist in database

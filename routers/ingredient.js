@@ -1,12 +1,7 @@
 var express = require( 'express' );
 var router = express.Router();
 var pg = require( 'pg' );
-var bodyParser = require( 'body-parser' );
 var connection = require('../modules/connection');
-
-//middleware
-//router.use(bodyParser.urlencoded({extended:false}));
-//router.use(bodyParser.json());
 
 //gets all ingredients
 router.get('/', function(req, res) {
