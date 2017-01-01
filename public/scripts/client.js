@@ -1,4 +1,3 @@
-//TODO: add functionality to 'Start over' button
 //TODO: add the rest of the recipes to the database
 //TODO: validate/fix what happens if user needs more recipes than exist in database
 //TODO: Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
@@ -15,6 +14,7 @@ var init = function() {
   getSections(); // callback creates Divs for list
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
+  $('#resetButton').on('click', reset);
 }; // end init
 
 var addPlurality = function(ingredient) {
@@ -173,7 +173,7 @@ var generateSectionElements = function(sectionsArray) {
     //Pick a section column div (depending on section name)
     var $el = setSectionColumn(section);
     //To that div- append a header and a list
-    $el.append('<h4>' + sectionsArray[i].section + '</h4>');
+    $el.append('<h4 class="text-center">' + sectionsArray[i].section + '</h4>');
     //Give the list an id of *Section*Ingredients
     $el.append('<ul id="' + sectionsArray[i].section + 'Ingredients" class="text-center section-list"></ul>');
   } // end for
@@ -331,24 +331,33 @@ var makeRecipeIdArray = function(amount, maxNum){
       numbers.push(num);
     } // end if
   } // end while
-  //console.log('chosen numbers:', numbers);
   return numbers;
 }; //end makeRecipeIdArray
 
+var reset = function() {
+  console.log('in reset');
+  //hide the list, show the form
+  $('#listDisplayDiv').hide();
+  $('.hideable').fadeIn();
+  //clear input value, add focus
+  $('#numMealsIn').val('');
+  $('#numMealsIn').focus();
+}; // end reset
+
 var setSectionColumn = function(section) {
   console.log('in setSectionColumn');
-  var $section;
+  var $el;
   //Pick a section column div (depending on section name)
   if (section === 'Produce') { //for produce, print in column 1
-    $section = $('#section-col-one');
+    $el = $('#section-col-one');
   } else if (section === 'Dairy' || section === 'Meat') { //for dairy and meat, column 2
-    $section = $('#section-col-two');
+    $el = $('#section-col-two');
   } else if (section == 'Dry' || section === 'Canned') { // for dry/canned, column 3
-    $section = $('#section-col-three');
+    $el = $('#section-col-three');
   } else { //for frozen and other, column 4
-    $section = $('#section-col-four');
+    $el = $('#section-col-four');
   } // end else
-  return $section;
+  return $el;
 }; // end setSectionColumn
 
 var toggleRecipeVisibility = function() {
