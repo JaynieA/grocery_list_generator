@@ -64,6 +64,7 @@ router.get('/name', function(req, res) {
   pg.connect(connection, function(err, client, done) {
     var query = client.query(queryString);
     query.on('row', function(row) {
+      //push recipe names into names array
       names.push(row);
     }); // end on query
     query.on('end', function() {

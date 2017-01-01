@@ -1,9 +1,8 @@
 //TODO: clean up init
 //TODO: add the rest of the recipes to the database
 //TODO: clarify the function names or order of calls on user form submit
-//TODO: condense ingredient objecs before displaying them on list
-//TODO: get and display meal names for the user with ingredients
 //TODO: validate/fix what happens if user needs more recipes than exist in database
+//TODO:   Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
 
 $(document).ready(function() {
   init();
@@ -13,12 +12,7 @@ var init = function() {
   console.log('in init');
   //add focus to the form on load
   $("#numMealsIn").focus();
-  //TODO: move these function calls later
-  getRecipeIngredients(1);
-  //get ingredients and measurements
-  getIngredients();
-  getMeasurements();
-  //TODO: keep the following
+  //Get and create section div's for list display
   getSections();
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
@@ -83,28 +77,30 @@ var clearItemMeasurement = function(ingredientObject) {
 
 var condenseIngredientObjects = function(ingredientArray) {
   console.log('in condenseIngredientObjects');
-  //Condense grocery list if an ingredient item and measurement are the same
-  //TODO: add better comments to this function for clarity
   var output = [];
-  ingredientArray.forEach(function(value) {
-      var existing = output.filter(function(v, i) {
-          return v.ingredient == value.ingredient && v.measurement == value.measurement;
-      }); // end existing
-      if(existing.length) {
-          var existingIndex = output.indexOf(existing[0]);
-          output[existingIndex].amount = output[existingIndex].amount+value.amount;
+  //For each ingredient object in ingredientArray
+  ingredientArray.forEach(function(ingredient) {
+      //Filter through ingredient objects to find other ingredients with the same name and measurement
+      //Store any matches in matches array
+      var matches = output.filter(function(v, i) {
+          return v.ingredient == ingredient.ingredient && v.measurement == ingredient.measurement;
+      }); // end matches
+      //If matches array contains any matches
+      if(matches.length) {
+          //find the index of the match in ingredientArray
+          var matchIndex = output.indexOf(matches[0]);
+          //consolidate the matches by adding the amounts together
+          output[matchIndex].amount = output[matchIndex].amount+ingredient.amount;
       } // end if
       else {
-          if(typeof value.amount == 'number')
-              value.amount = value.amount;
-          output.push(value);
+        //If no matches exist, push the ingredient into output array
+          output.push(ingredient);
       } // end else
   }); // end forEach
   return output;
 }; // end condenseRecipeObjects
 
 var convertToFraction = function(number) {
-  //console.log('in convertToFraction:', number);
   var fraction = new Fraction(number);
   return fraction.toFraction(true);
 }; // end convertToFraction
@@ -116,9 +112,16 @@ var displayList =  function(e) {
   //hide the form, show the list
   $('.hideable').hide();
   $('.results').show();
-  // get total number of recipes in database, getManyRecipeIngredients as a callback
-  getTotalRecipeCount();
+  // get total number of recipes in database
+  getTotalRecipeCount(); //getManyRecipeIngredients as a callback
 }; // end displayList
+
+var displayRecipeNames = function(array) {
+  console.log('in displayRecipeNames', array);
+  for (var i = 0; i < array.length; i++) {
+    $('#mealsDiv').append('<p>' + array[i].name + '</p>');
+  } // end for
+}; // end displayRecipeNames
 
 var displayRecipes = function(recipeArray) {
   console.log('in displayRecipes', recipeArray);
@@ -128,19 +131,22 @@ var displayRecipes = function(recipeArray) {
   $recipeDiv.html('');
   //for each recipe in the array, append a div displaying its information
   for (var i = 0; i < recipeArray.length; i++) {
+    var recipe = recipeArray[i];
     $recipeDiv.append('<div class="col-sm-3"></div>');
     var $wrapper = $recipeDiv.children().last().append('<div class="recipe"></div>');
     var $recipe = $wrapper.children().last();
     //recipe title div
-    $recipe.append('<div class="recipe-title"><p>' + recipeArray[i].name + '</p></div>');
+    $recipe.append('<div class="recipe-title"><p>' + recipe.name + '</p></div>');
     //if the recipe link exists, add a link next to the title
-    if (recipeArray[i].reference_url !== null) {
-      //add a link with info glyphicon
-      //TODO: make this more readable
-      $recipe.children().last().find('p').append('<a href="'+ recipeArray[i].reference_url +'" target="_blank" class="recipe-link"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>');
+    if (recipe.reference_url !== null) {
+      //Append an info glyphicon link to the title element
+      var $recipeTitle = $recipe.children().last().find('p');
+      $recipeTitle.append('<a href="'+ recipe.reference_url +'" target="_blank" class="recipe-link"></a>');
+      var $recipeLink = $recipeTitle.children().last();
+      $recipeLink.append('<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>');
     } //end if
-    //add css for the background image
-    $recipe.css('background-image', 'url('+recipeArray[i].image_url+')');
+    //Add background image via CSS
+    $recipe.css('background-image', 'url('+recipe.image_url+')');
   } // end for
 }; // end displayRecipes
 
@@ -178,7 +184,6 @@ var getSections = function(){
     type: 'GET',
     url: '/section',
     success: function(response) {
-      console.log(response);
       generateSectionElements(response.sections);
     }, // end success
     error: function(err) {
@@ -210,10 +215,9 @@ var getManyRecipeIngredients = function(arrayOfNumbers) {
     type: 'GET',
     url: urlString,
     success: function(response) {
-      console.log(response);
-      //TODO: condense the following process by nesting functions
-      var condensedIngredients = condenseIngredientObjects(response.ingredientList);
-      var formattedIngredients = formatIngredientObjects(condensedIngredients);
+      //Condense grocery list if an ingredient item and measurement are the same
+      //Format ingredients to clear 'Item', convert numbers to fractions, and add plurality
+      var formattedIngredients = formatIngredientObjects(condenseIngredientObjects(response.ingredientList));
       appendIngredientsToListSections(formattedIngredients);
     }, // end success
     error: function(err) {
@@ -230,7 +234,8 @@ var getMealNames = function(array) {
     type: 'GET',
     url: urlString,
     success: function(response) {
-      console.log(response);
+      //display recipe names on the DOM
+      displayRecipeNames(response.names);
     }, // end success
     error: function(err){
       console.log(err);
@@ -300,7 +305,6 @@ var getTotalRecipeCount = function() {
     url: '/recipe/count',
     success: function(response) {
       var recipeCount = Number(response.count);
-      console.log('recipe count:',recipeCount);
       //get user input for number of meals requested
       var numMeals = $('#numMealsIn').val();
       //make recipe id array
