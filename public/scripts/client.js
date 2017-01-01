@@ -1,8 +1,10 @@
-//TODO: clean up init
+//TODO: sort list display
+//TODO: add functionality to 'Start over' button
+//TODO: take body-parser out of routes
 //TODO: add the rest of the recipes to the database
 //TODO: clarify the function names or order of calls on user form submit
 //TODO: validate/fix what happens if user needs more recipes than exist in database
-//TODO:   Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
+//TODO: Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
 
 $(document).ready(function() {
   init();
@@ -10,19 +12,18 @@ $(document).ready(function() {
 
 var init = function() {
   console.log('in init');
-  //add focus to the form on load
+  //Add focus to main input element
   $("#numMealsIn").focus();
-  //Get and create section div's for list display
-  getSections();
+  //Get sections from db
+  getSections(); // callback creates Divs for list
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
 }; // end init
 
 var addPlurality = function(ingredient) {
-  //console.log('in addPlurality');
-  //If the ingredient amount > 1, add an 's' if/where appropriate
+  //If the ingredient amount > 1
   if (ingredient.amount > 1) {
-    //Make the measurement plural with 's'
+    //Make the measurement plural with 's' if/where appropriate
     if (ingredient.measurement != 'Oz' &&
         ingredient.measurement != 'Tbsp' &&
         ingredient.measurement != 'Tsp' &&
@@ -42,7 +43,7 @@ var addPlurality = function(ingredient) {
 
 var appendIngredientsToListSections = function(ingredientsArray) {
   console.log('in appendIngredientsToListSections');
-  //append the ingredient to the appropriate section list
+  //append the ingredient to the appropriate section div
   for (var i = 0; i < ingredientsArray.length; i++) {
     var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
     var amount = ingredientsArray[i].amount;
@@ -50,6 +51,8 @@ var appendIngredientsToListSections = function(ingredientsArray) {
     var measurement = ingredientsArray[i].measurement;
     $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
   } // end for
+  //Hide the empty list sections
+  $(".section-list:empty").parent().hide();
 }; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
@@ -111,7 +114,7 @@ var displayList =  function(e) {
   e.preventDefault();
   //hide the form, show the list
   $('.hideable').hide();
-  $('.results').show();
+  $('#listDisplayDiv').fadeIn();
   // get total number of recipes in database
   getTotalRecipeCount(); //getManyRecipeIngredients as a callback
 }; // end displayList
@@ -172,9 +175,10 @@ var generateSectionElements = function(sectionsArray) {
     //append a div for each section
     $('#sectionsDiv').append('<div class="col-sm-3"></div>');
     var $section = $('#sectionsDiv').children().last();
-    //to that div, append a header and a list- the list with an id of *Section*Ingredients
+    //To that div- append a header and a list
     $section.append('<h4>' + sectionsArray[i].section + '</h4>');
-    $section.append('<ul id="' + sectionsArray[i].section + 'Ingredients" class="text-center"></ul>');
+    //Give the list an id of *Section*Ingredients
+    $section.append('<ul id="' + sectionsArray[i].section + 'Ingredients" class="text-center section-list"></ul>');
   } // end for
 }; // end generateSectionDivs
 
@@ -338,7 +342,7 @@ var toggleRecipeVisibility = function() {
   console.log('in toggleRecipeVisibility');
   //toggle visibility of resipes on button click
   $('.recipe-display').fadeToggle('fast');
-  console.log($('#displayRecipesButton').text());
+  //Toggle button text to say View or Hide
   if ($('#displayRecipesButton').text() === 'View All Recipes') {
     $('#displayRecipesButton').text('Hide Recipes');
   } else {

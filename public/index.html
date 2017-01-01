@@ -35,14 +35,17 @@
             </div>
         </form>
 
-        <div class="clearfix">
+        <div class="clearfix hideable">
           <button id="displayRecipesButton" type="button" class="btn btn-primary pull-right">View All Recipes</button>
         </div>
 
         <div id="recipeDisplayDiv" class="recipe-display row"></div>
 
-        <div class="results row">
-            <h2>This Weeks Meals:</h2>
+        <div id="listDisplayDiv" class="list-display row">
+            <div class="clearfix">
+              <button id="restartButton" type="button" class="btn btn-primary pull-right">Start Over</button>
+            </div>
+            <h2>Meals:</h2>
             <div id="mealsDiv" class="text-center"></div>
             <hr>
             <h3>Grocery List:</h3>
