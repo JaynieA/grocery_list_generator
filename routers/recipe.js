@@ -42,4 +42,35 @@ router.get('/count', function(req, res) {
   }); // end pg connect
 }); // end get
 
+//get recipe names
+router.get('/name', function(req, res) {
+  //unpack params and build IN parameters for query
+  numRecipes = Number(req.query.totalNum);
+  var inParams = '(';
+  for (var i = 1; i <= numRecipes; i++) {
+    //concatenate id to string
+    if (i === numRecipes) {
+      // if it's the last one, end with parenthesis:
+      inParams += req.query['id'+i] + ')';
+    } else {
+      //add a comma in prep for the next one added
+      inParams += req.query['id'+i] + ', ';
+    } // end else
+  } // end for
+  //Build queryString
+  var queryString = 'SELECT name FROM recipes WHERE id IN ' + inParams;
+  //Define names array
+  var names = [];
+  pg.connect(connection, function(err, client, done) {
+    var query = client.query(queryString);
+    query.on('row', function(row) {
+      names.push(row);
+    }); // end on query
+    query.on('end', function() {
+      done();
+      res.send({names: names});
+    }); // end query
+  }); // end pg connect
+}); // end get
+
 module.exports = router;

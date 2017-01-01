@@ -3,6 +3,7 @@
 //TODO: clarify the function names or order of calls on user form submit
 //TODO: condense ingredient objecs before displaying them on list
 //TODO: get and display meal names for the user with ingredients
+//TODO: validate/fix what happens if user needs more recipes than exist in database
 
 $(document).ready(function() {
   init();
@@ -22,6 +23,28 @@ var init = function() {
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
 }; // end init
+
+var addPlurality = function(ingredient) {
+  //console.log('in addPlurality');
+  //If the ingredient amount > 1, add an 's' if/where appropriate
+  if (ingredient.amount > 1) {
+    //Make the measurement plural with 's'
+    if (ingredient.measurement != 'Oz' &&
+        ingredient.measurement != 'Tbsp' &&
+        ingredient.measurement != 'Tsp' &&
+        ingredient.measurement != 'Box' &&
+        ingredient.measurement != 'Inch' &&
+        ingredient.measurement != 'Large Leaves') {
+      ingredient.measurement += 's';
+    } // end if
+    //Make the measurement plural with 'es' if/where appropriate
+    if (ingredient.measurement === 'Inch' ||
+        ingredient.measurement === 'Box') {
+      ingredient.measurement += 'es';
+    } // end if
+  } // end if
+  return ingredient.measurement;
+}; // end addPlurality
 
 var appendIngredientsToListSections = function(ingredientsArray) {
   console.log('in appendIngredientsToListSections');
@@ -51,6 +74,13 @@ var buildUrlParams = function(numbersArray) {
   return params;
 }; // end buildUrlParams
 
+var clearItemMeasurement = function(ingredientObject) {
+  //console.log('in clearItemMeasurement');
+  if (ingredientObject.measurement === 'Item' || ingredientObject.measurement === 'Items') {
+    ingredientObject.measurement = '';
+  } // end if
+}; // end deleteItemMeasurement
+
 var condenseIngredientObjects = function(ingredientArray) {
   console.log('in condenseIngredientObjects');
   //Condense grocery list if an ingredient item and measurement are the same
@@ -72,6 +102,12 @@ var condenseIngredientObjects = function(ingredientArray) {
   }); // end forEach
   return output;
 }; // end condenseRecipeObjects
+
+var convertToFraction = function(number) {
+  //console.log('in convertToFraction:', number);
+  var fraction = new Fraction(number);
+  return fraction.toFraction(true);
+}; // end convertToFraction
 
 var displayList =  function(e) {
   console.log('in displayList');
@@ -107,6 +143,22 @@ var displayRecipes = function(recipeArray) {
     $recipe.css('background-image', 'url('+recipeArray[i].image_url+')');
   } // end for
 }; // end displayRecipes
+
+var formatIngredientObjects = function(ingredientsArray) {
+  console.log('in formatIngredientObjects');
+  //TODO: Break extract this into 3 separate functions (plurality, fraction, measurement)
+  for (var i = 0; i < ingredientsArray.length; i++) {
+    var ingredient = ingredientsArray[i];
+    //Add plurality on measurements where appropriate, depending on amount
+    ingredient.measurement = addPlurality(ingredient);
+    //If the measurement is 'Item', clear it
+    clearItemMeasurement(ingredient);
+    //Convert amount number to a fraction (using fraction.min.js plugin)
+    ingredient.amount = convertToFraction(ingredient.amount);
+  } // end for
+  //Return the formatted ingredientsArray
+  return ingredientsArray;
+}; // end formatIngredientObjects
 
 var generateSectionElements = function(sectionsArray) {
   console.log('in generateSectionElements');
@@ -159,7 +211,7 @@ var getManyRecipeIngredients = function(arrayOfNumbers) {
     url: urlString,
     success: function(response) {
       console.log(response);
-      //TODO: condense the following process by nexting functions
+      //TODO: condense the following process by nesting functions
       var condensedIngredients = condenseIngredientObjects(response.ingredientList);
       var formattedIngredients = formatIngredientObjects(condensedIngredients);
       appendIngredientsToListSections(formattedIngredients);
@@ -170,37 +222,21 @@ var getManyRecipeIngredients = function(arrayOfNumbers) {
   }); // end ajax
 }; // end getManyRecipeIngredients
 
-var formatIngredientObjects = function(ingredientsArray) {
-  console.log('in formatIngredientObjects');
-  //TODO: Break extract this into 3 separate functions (plurality, fraction, measurement)
-  for (var i = 0; i < ingredientsArray.length; i++) {
-    var ingredient = ingredientsArray[i];
-
-    //If the ingredient amount > 1, add an 's' if/where appropriate to read as plural
-    if (ingredient.amount > 1) {
-      //Make the measurement plural with s
-      if (ingredient.measurement != 'Tbsp' && ingredient.measurement != 'Oz' && ingredient.measurement != 'Tsp' && ingredient.measurement != 'Inch') {
-        ingredient.measurement += 's';
-      } // end if
-      //Make the measurement plural with 'es'
-      if (ingredient.measurement === 'Inch') {
-        ingredient.measurement += 'es';
-      } // end if
-      //TODO: add plurality to ingredients with item measurement
-    } // end if
-
-    //If the measurement is 'Item', set it's measurement to blank
-    if (ingredient.measurement === 'Item' || ingredient.measurement === 'Items') {
-      ingredient.measurement = '';
-    } // end if
-
-    //Convert the amount to be a fraction using fraction.min.js
-    var amount = new Fraction(ingredient.amount);
-    ingredient.amount = amount.toFraction(true);
-  } // end for
-  //Return the formatted ingredientsArray
-  return ingredientsArray;
-}; // end formatIngredientObjects
+var getMealNames = function(array) {
+  console.log('in getMealNames', array);
+  var params = buildUrlParams(array);
+  var urlString = '/recipe/name?' + $.param(params);
+  $.ajax({
+    type: 'GET',
+    url: urlString,
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err){
+      console.log(err);
+    } // end error
+  }); // end ajax
+}; // end getMealNames
 
 var getMeasurements = function() {
   console.log('in getMeasurements');
@@ -267,8 +303,11 @@ var getTotalRecipeCount = function() {
       console.log('recipe count:',recipeCount);
       //get user input for number of meals requested
       var numMeals = $('#numMealsIn').val();
-      //get ingredients for meals
-      getManyRecipeIngredients(makeRecipeIdArray(numMeals, recipeCount));
+      //make recipe id array
+      var IdArray = makeRecipeIdArray(numMeals, recipeCount);
+      //get ingredients and names for meals
+      getManyRecipeIngredients(IdArray);
+      getMealNames(IdArray);
     }, // end success
     error: function(err) {
       console.log(err);
