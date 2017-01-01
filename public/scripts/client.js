@@ -111,6 +111,7 @@ var displayList =  function(e) {
   e.preventDefault();
   //hide the form, show the list
   $('.hideable').hide();
+  $('#recipeDisplayDiv').hide();
   $('#listDisplayDiv').fadeIn();
   // get total number of recipes in database
   getTotalRecipeCount(); //getManyRecipeIngredients as a callback
@@ -336,12 +337,17 @@ var makeRecipeIdArray = function(amount, maxNum){
 
 var reset = function() {
   console.log('in reset');
+  //clear lists and meals 
+  $('#mealsDiv').empty();
+  $('.section-list').empty();
   //hide the list, show the form
   $('#listDisplayDiv').hide();
   $('.hideable').fadeIn();
   //clear input value, add focus
   $('#numMealsIn').val('');
   $('#numMealsIn').focus();
+  //set recipe button text
+  $('#displayRecipesButton').text('View All Recipes');
 }; // end reset
 
 var setSectionColumn = function(section) {
