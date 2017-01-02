@@ -58,7 +58,7 @@ router.get('/name', function(req, res) {
     } // end else
   } // end for
   //Build queryString
-  var queryString = 'SELECT name FROM recipes WHERE id IN ' + inParams;
+  var queryString = 'SELECT id, name FROM recipes WHERE id IN ' + inParams;
   //Define names array
   var names = [];
   pg.connect(connection, function(err, client, done) {

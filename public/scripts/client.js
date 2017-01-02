@@ -100,6 +100,31 @@ var condenseIngredientObjects = function(ingredientArray) {
   return output;
 }; // end condenseRecipeObjects
 
+var condenseRecipeNameObjects = function(recipeNamesArray) {
+  console.log('in condenseRecipeNameObjects');
+  var output = [];
+  //for each object in the array
+  recipeNamesArray.forEach(function(object) {
+    //Find any objects in the output array that have the same name
+    //Store those matches in an array
+    var matches = output.filter(function(v, i) {
+        return v.name == object.name;
+    }); // end matches
+    //If there are amy matches
+    if (matches.length) {
+      //find the index of the match in recipeNamesArray
+      var matchIndex = output.indexOf(matches[0]);
+      //increment the existing objects occurence
+      output[matchIndex].occurence++;
+    } else {
+      //If no matches exist, push the object into the output array
+      output.push(object);
+    } // end else
+  }); // end forEach
+  console.log('output -->', output);
+  return output;
+}; // end condenseRecipeNameObjects
+
 var convertToFraction = function(number) {
   var fraction = new Fraction(number);
   return fraction.toFraction(true);
@@ -117,10 +142,18 @@ var displayList =  function(e) {
   getTotalRecipeCount(); //getManyRecipeIngredients as a callback
 }; // end displayList
 
-var displayRecipeNames = function(array) {
-  console.log('in displayRecipeNames', array);
-  for (var i = 0; i < array.length; i++) {
-    $('#mealsDiv').append('<p>' + array[i].name + '</p>');
+var displayRecipeNames = function(objectArray) {
+  console.log('in displayRecipeNames');
+  //Append each meal name to the DOM
+  for (var i = 0; i < objectArray.length; i++) {
+    //If it occurs more than once, display how many times it occurs
+    if (objectArray[i].occurence != 1) {
+      console.log('multiple:', objectArray[i].name);
+      $('#mealsDiv').append('<p>(' + objectArray[i].occurence + ') ' + objectArray[i].name + '</p>');
+    } else {
+      //Else, just display the name
+      $('#mealsDiv').append('<p>' + objectArray[i].name + '</p>');
+    } // end else
   } // end for
 }; // end displayRecipeNames
 
@@ -236,8 +269,9 @@ var getMealNames = function(array) {
     type: 'GET',
     url: urlString,
     success: function(response) {
-      //display recipe names on the DOM
-      displayRecipeNames(response.names);
+      //condense, then display recipe names for the chosen recipes
+      var condensedRecipeNames = condenseRecipeNameObjects(makeRecipeNamesArray(response.names, array));
+      displayRecipeNames(condensedRecipeNames);
     }, // end success
     error: function(err){
       console.log(err);
@@ -324,20 +358,51 @@ var getTotalRecipeCount = function() {
 var makeRecipeIdArray = function(amount, maxNum){
   console.log('in makeRecipeIdArray');
   numbers = [];
+  console.log('amount -->', amount);
   //choose a random number for each number of meals requested by user
   while (numbers.length < amount){
     num = getRandomInt(maxNum);
-    if ($.inArray(num, numbers) === -1) {
-      //push random number into numbers array
+    //If the number of meals requested is less than or equal to number of recipes in the database
+    if (amount <= maxNum) {
+      //if the number is not already in the array:
+      if ($.inArray(num, numbers) === -1) {
+        //push random number into numbers array
+        numbers.push(num);
+      } // end if
+    //If the number of meals requested is more than the number of recipes in the database:
+    } else {
+      //don't monitor duplicates. push numbers into array
       numbers.push(num);
-    } // end if
+      //TODO: figure this mess out
+      //monitor duplicates while it's less than number of recipes, then go rogue
+
+
+    } // end else
   } // end while
   return numbers;
 }; //end makeRecipeIdArray
 
+var makeRecipeNamesArray = function(objectArray, idArray) {
+  console.log('in makeRecipeNamesArray');
+  var mealNames = [];
+  //Loop through each recipe id chosen by randomizer
+  for (var i = 0; i < idArray.length; i++) {
+    //get the recipe name that matches the recipe id
+    for (var ii = 0; ii < objectArray.length; ii++) {
+      if (objectArray[ii].id === idArray[i]) {
+        //give the object an occurence property to track how many times it was chosen
+        objectArray[ii].occurence = 1;
+        //push the name into the mealNames array
+        mealNames.push(objectArray[ii]);
+      } // end if
+    } // end for
+  } // end for
+  return mealNames;
+}; // end makeRecipeNamesArray
+
 var reset = function() {
   console.log('in reset');
-  //clear lists and meals 
+  //clear lists and meals
   $('#mealsDiv').empty();
   $('.section-list').empty();
   //hide the list, show the form
