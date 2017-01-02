@@ -30,6 +30,13 @@ ul {
     clear: both;
     display: table;
 }
+.secondary-form {
+  display: none;
+  margin-top: 40px;
+  label {
+    margin: 0 2px;
+  }
+}
 .container {
   width: 70%;
 }

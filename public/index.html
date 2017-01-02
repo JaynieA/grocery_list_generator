@@ -27,13 +27,37 @@
 
     <div class="container">
         <hr class="hideable">
-        <form class="hideable" onsubmit="displayList(event)">
+        <form id="generateListForm" class="hideable" onsubmit="displayList(event)">
             <div class="form-group">
                 <label class="control-label" for="numMealsIn">How many meals will you be shopping for?</label>
                 <input id="numMealsIn" type="number" class="form-control" placeholder="Number of meals" required>
                 <button class="btn btn-success" type="submit" name="submit">Generate List</button>
             </div>
         </form>
+
+        <form id="createRecipeForm" onsubmit="addNewRecipe(event)" class="form-inline secondary-form hideable">
+            <div class="form-group">
+                <label for="recipeNameIn">Name:</label>
+                <input type="text" id="recipeNameIn" placeholder="Recipe Name" class="form-control" autofocus required>
+            </div>
+            <div class="form-group">
+                <label for="servingsIn">Servings:</label>
+                <input id="servingsIn" class="form-control" type="number" placeholder="Number of Servings" required>
+            </div>
+            <div class="form-group">
+                <label for="referenceLinkIn">Recipe URL:</label>
+                <input id="referenceLinkIn" type="url" class="form-control" placeholder="Recipe Link">
+            </div>
+            <div class="form-group">
+                <label for="imageUrlIn">Image URL:</label>
+                <input id="imageUrlIn" type="url" class="form-control" placeholder="Image Link" required>
+            </div>
+            <button type="submit" class="btn btn-success">Create Recipe</button>
+        </form>
+
+        <div class="clearfix hideable">
+            <button id="createRecipeButton" type="button" class="btn btn-warning pull-right">Create New Recipe</button>
+        </div>
 
         <div class="clearfix hideable">
           <button id="displayRecipesButton" type="button" class="btn btn-primary pull-right">View All Recipes</button>

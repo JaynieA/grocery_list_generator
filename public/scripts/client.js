@@ -14,7 +14,28 @@ var init = function() {
   //Event Listeners
   $('#displayRecipesButton').on('click', getRecipes);
   $('#resetButton').on('click', reset);
+  $('#createRecipeButton').on('click', toggleCreateRecipeForm);
 }; // end init
+
+var appendIngredientsToListSections = function(ingredientsArray) {
+  console.log('in appendIngredientsToListSections');
+  //append the ingredient to the appropriate section div
+  for (var i = 0; i < ingredientsArray.length; i++) {
+    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
+    var amount = ingredientsArray[i].amount;
+    var ingredient = ingredientsArray[i].ingredient;
+    var measurement = ingredientsArray[i].measurement;
+    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
+  } // end for
+  //Hide the empty list sections
+  $(".section-list:empty").parent().hide();
+}; // end appendIngredientsToListSections
+
+var addNewRecipe = function(e) {
+  console.log('in addNewRecipe');
+  //Prevent page refresh on form submit
+  e.preventDefault();
+}; // end addNewRecipe
 
 var addPlurality = function(ingredient) {
   //If the ingredient amount > 1
@@ -36,20 +57,6 @@ var addPlurality = function(ingredient) {
   } // end if
   return ingredient.measurement;
 }; // end addPlurality
-
-var appendIngredientsToListSections = function(ingredientsArray) {
-  console.log('in appendIngredientsToListSections');
-  //append the ingredient to the appropriate section div
-  for (var i = 0; i < ingredientsArray.length; i++) {
-    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
-    var amount = ingredientsArray[i].amount;
-    var ingredient = ingredientsArray[i].ingredient;
-    var measurement = ingredientsArray[i].measurement;
-    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
-  } // end for
-  //Hide the empty list sections
-  $(".section-list:empty").parent().hide();
-}; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
   console.log('in buildUrlParams');
@@ -425,6 +432,18 @@ var setSectionColumn = function(section) {
   } // end else
   return $el;
 }; // end setSectionColumn
+
+var toggleCreateRecipeForm = function() {
+  console.log('in showCreateRecipeForm');
+  //slide add recipe form into view
+  $('#createRecipeForm').slideToggle();
+  //Control button text on toggle
+  if ($(this).text() === 'Create New Recipe') {
+    $(this).text('Abandon Create Recipe');
+  } else {
+    $(this).text('Create New Recipe');
+  } // end else
+}; // end showCreateRecipeForm
 
 var toggleRecipeVisibility = function() {
   console.log('in toggleRecipeVisibility');
