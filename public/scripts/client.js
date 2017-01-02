@@ -124,8 +124,7 @@ var appendIngredientsToListSections = function(ingredientsArray) {
     $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
   } // end for
   //Hide the empty list section titles
-  //TODO: fix this next line- it's buggy
-  //$(".section-list:empty").prev().hide();
+  $(".section-list:empty").prev().hide();
 }; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
@@ -282,7 +281,6 @@ var displayRecipes = function(recipeArray) {
 
 var formatIngredientObjects = function(ingredientsArray) {
   if (logs) console.log('in formatIngredientObjects');
-  //TODO: Break extract this into 3 separate functions (plurality, fraction, measurement)
   for (var i = 0; i < ingredientsArray.length; i++) {
     var ingredient = ingredientsArray[i];
     //Add plurality on measurements where appropriate, depending on amount
