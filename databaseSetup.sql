@@ -30,31 +30,3 @@ CREATE TABLE recipe_ingredients (
 	measurement_id INT NOT NULL,
 	ingredient_amount FLOAT NOT NULL
 );
-
---JOINS
-
-SELECT  recipe_ingredients.recipe_id, recipes.name AS recipe_name, recipe_ingredients.ingredient_amount, measurements.name as measurement_name, ingredients.name AS ingredient_name, store_section.name AS section_name
-FROM recipes
-JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipe_id
-JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
-JOIN store_section ON ingredients.store_section_id = store_section.id
-JOIN measurements ON recipe_ingredients.measurement_id = measurements.id;
-
-SELECT name FROM recipes WHERE id = 1;
-
-SELECT  recipe_ingredients.ingredient_amount, measurements.name as measurement_name, ingredients.name AS ingredient_name, store_section.name AS section_name
-FROM recipes
-JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipe_id
-JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
-JOIN store_section ON ingredients.store_section_id = store_section.id
-JOIN measurements ON recipe_ingredients.measurement_id = measurements.id
-WHERE recipe_ingredients.recipe_id = 1;
-
-SELECT  recipes.name AS recipe_name, recipes.id AS recipe_id, recipe_ingredients.ingredient_amount, measurements.name as measurement_name, ingredients.name AS ingredient_name, store_section.name AS section_name
-FROM recipes
-JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipe_id
-JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
-JOIN store_section ON ingredients.store_section_id = store_section.id
-JOIN measurements ON recipe_ingredients.measurement_id = measurements.id
-WHERE recipe_ingredients.recipe_id = 4
-OR recipe_ingredients.recipe_id = 6;

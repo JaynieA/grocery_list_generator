@@ -4,12 +4,14 @@
 //TODO: add ability to choose recipes for list
 //TODO: give better class names to elements so its easier to hide/show things appropriately, then clean up those functions
 
+var logs = false;
+
 $(document).ready(function() {
   init();
 }); // end doc ready
 
 var init = function() {
-  console.log('in init');
+  if (logs) console.log('in init');
   //Add focus to main input element
   $("#numMealsIn").focus();
   //Get sections from db
@@ -23,7 +25,7 @@ var init = function() {
 }; // end init
 
 var addIngredientSubForm = function() {
-  console.log('in addIngredientSubForm');
+  if (logs) console.log('in addIngredientSubForm');
   //clone the ingredient form line
   var $clone = $(this).prev().clone();
   //clear the input of cloned form
@@ -35,7 +37,7 @@ var addIngredientSubForm = function() {
 }; // end addIngredientSubForm
 
 var addNewRecipe = function(e) {
-  console.log('in addNewRecipe');
+  if (logs) console.log('in addNewRecipe');
   //Prevent page refresh on form submit
   e.preventDefault();
   //create object
@@ -56,13 +58,13 @@ var addNewRecipe = function(e) {
       displayAddIngredientsForm(response);
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end addNewRecipe
 
 var addRecipeIngredients = function(e) {
-  console.log('in addRecipeIngredients');
+  if (logs) console.log('in addRecipeIngredients');
   //Prevent page refresh
   e.preventDefault();
   //make array of ingredients to add
@@ -74,18 +76,18 @@ var addRecipeIngredients = function(e) {
     id: recipeId,
     ingredients: ingredientsToAdd
   }; // end objectToSend
-  console.log(objectToSend);
+  if (logs) console.log(objectToSend);
   $.ajax({
     type: 'POST',
     url: '/recipe_ingredient',
     data: objectToSend,
     success: function(response) {
-      console.log(response);
+      if (logs) console.log(response);
       //show confirmation modal
       $('#confirmationModal').modal('show');
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end addRecipeIngredients
@@ -112,10 +114,9 @@ var addPlurality = function(ingredient) {
 }; // end addPlurality
 
 var appendIngredientsToListSections = function(ingredientsArray) {
-  console.log('in appendIngredientsToListSections', ingredientsArray);
+  if (logs) console.log('in appendIngredientsToListSections', ingredientsArray);
   //append the ingredient to the appropriate section div
   for (var i = 0; i < ingredientsArray.length; i++) {
-    console.log(ingredientsArray[i].ingredient);
     var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
     var amount = ingredientsArray[i].amount;
     var ingredient = ingredientsArray[i].ingredient;
@@ -127,7 +128,7 @@ var appendIngredientsToListSections = function(ingredientsArray) {
 }; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
-  console.log('in buildUrlParams');
+  if (logs) console.log('in buildUrlParams');
   //set counter variable and params object
   var params = {};
   var count = 1;
@@ -143,19 +144,19 @@ var buildUrlParams = function(numbersArray) {
 }; // end buildUrlParams
 
 var clearForm = function(formId) {
-  console.log('in clearForm');
+  if (logs) console.log('in clearForm');
   $('#'+formId).find('input, select').val('');
 }; // end clearForm
 
 var clearItemMeasurement = function(ingredientObject) {
-  //console.log('in clearItemMeasurement');
+  //if (logs) console.log('in clearItemMeasurement');
   if (ingredientObject.measurement === 'Item' || ingredientObject.measurement === 'Items') {
     ingredientObject.measurement = '';
   } // end if
 }; // end deleteItemMeasurement
 
 var condenseIngredientObjects = function(ingredientArray) {
-  console.log('in condenseIngredientObjects');
+  if (logs) console.log('in condenseIngredientObjects');
   var output = [];
   //For each ingredient object in ingredientArray
   ingredientArray.forEach(function(ingredient) {
@@ -180,7 +181,7 @@ var condenseIngredientObjects = function(ingredientArray) {
 }; // end condenseRecipeObjects
 
 var condenseRecipeNameObjects = function(recipeNamesArray) {
-  console.log('in condenseRecipeNameObjects');
+  if (logs) console.log('in condenseRecipeNameObjects');
   var output = [];
   //for each object in the array
   recipeNamesArray.forEach(function(object) {
@@ -200,7 +201,7 @@ var condenseRecipeNameObjects = function(recipeNamesArray) {
       output.push(object);
     } // end else
   }); // end forEach
-  console.log('output -->', output);
+  if (logs) console.log('output -->', output);
   return output;
 }; // end condenseRecipeNameObjects
 
@@ -210,7 +211,7 @@ var convertToFraction = function(number) {
 }; // end convertToFraction
 
 var displayAddIngredientsForm = function(obj) {
-  console.log('in displayAddIngredientsForm', obj);
+  if (logs) console.log('in displayAddIngredientsForm', obj);
   //populate form selects with measurements and ingredients
   getIngredients();
   getMeasurements();
@@ -225,7 +226,7 @@ var displayAddIngredientsForm = function(obj) {
 }; // end displayAddIngredientsForm
 
 var displayList =  function(e) {
-  console.log('in displayList');
+  if (logs) console.log('in displayList');
   //prevent page refresh on form submit
   e.preventDefault();
   //hide the form, show the list
@@ -237,12 +238,12 @@ var displayList =  function(e) {
 }; // end displayList
 
 var displayRecipeNames = function(objectArray) {
-  console.log('in displayRecipeNames');
+  if (logs) console.log('in displayRecipeNames');
   //Append each meal name to the DOM
   for (var i = 0; i < objectArray.length; i++) {
     //If it occurs more than once, display how many times it occurs
     if (objectArray[i].occurence != 1) {
-      console.log('multiple:', objectArray[i].name);
+      if (logs) console.log('multiple:', objectArray[i].name);
       $('#mealsDiv').append('<p>(' + objectArray[i].occurence + ') ' + objectArray[i].name + '</p>');
     } else {
       //Else, just display the name
@@ -252,7 +253,7 @@ var displayRecipeNames = function(objectArray) {
 }; // end displayRecipeNames
 
 var displayRecipes = function(recipeArray) {
-  console.log('in displayRecipes', recipeArray);
+  if (logs) console.log('in displayRecipes', recipeArray);
   toggleRecipeVisibility();
   var $recipeDiv = $('#recipeDisplayDiv');
   //Empty recipeDiv
@@ -279,7 +280,7 @@ var displayRecipes = function(recipeArray) {
 }; // end displayRecipes
 
 var formatIngredientObjects = function(ingredientsArray) {
-  console.log('in formatIngredientObjects');
+  if (logs) console.log('in formatIngredientObjects');
   //TODO: Break extract this into 3 separate functions (plurality, fraction, measurement)
   for (var i = 0; i < ingredientsArray.length; i++) {
     var ingredient = ingredientsArray[i];
@@ -295,7 +296,7 @@ var formatIngredientObjects = function(ingredientsArray) {
 }; // end formatIngredientObjects
 
 var generateSectionElements = function(sectionsArray) {
-  console.log('in generateSectionElements');
+  if (logs) console.log('in generateSectionElements');
   for (var i = 0; i < sectionsArray.length; i++) {
     var section = sectionsArray[i].section;
     //Pick a section column div (depending on section name)
@@ -308,14 +309,14 @@ var generateSectionElements = function(sectionsArray) {
 }; // end generateSectionDivs
 
 var generateSelectOptions = function(selectClass, array, property1, property2) {
-  console.log('in generateSelectOptions for', selectClass);
+  if (logs) console.log('in generateSelectOptions for', selectClass);
   for (var i = 0; i < array.length; i++) {
     $(selectClass).append('<option value="'+array[i][property2]+'">'+array[i][property1]+'</option>');
   } // end for
 }; // end generateSelectOptions
 
 var getSections = function(){
-  console.log('in getSections');
+  if (logs) console.log('in getSections');
   $.ajax({
     type: 'GET',
     url: '/section',
@@ -323,13 +324,13 @@ var getSections = function(){
       generateSectionElements(response.sections);
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getSections
 
 var getIngredients = function() {
-  console.log('in getIngredients');
+  if (logs) console.log('in getIngredients');
   $.ajax({
     type: 'GET',
     url: '/ingredient',
@@ -337,13 +338,13 @@ var getIngredients = function() {
       generateSelectOptions('.ingredient-in ', response.ingredients, 'name', 'id');
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getIngredients
 
 var getManyRecipeIngredients = function(arrayOfNumbers) {
-  console.log('in getManyRecipeIngredients for:', arrayOfNumbers);
+  if (logs) console.log('in getManyRecipeIngredients for:', arrayOfNumbers);
   var params = buildUrlParams(arrayOfNumbers);
   //build url string
   var urlString = '/joined/list?'+ $.param(params);
@@ -357,13 +358,13 @@ var getManyRecipeIngredients = function(arrayOfNumbers) {
       appendIngredientsToListSections(formattedIngredients);
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getManyRecipeIngredients
 
 var getMealNames = function(array) {
-  console.log('in getMealNames', array);
+  if (logs) console.log('in getMealNames', array);
   var params = buildUrlParams(array);
   var urlString = '/recipe/name?' + $.param(params);
   $.ajax({
@@ -372,16 +373,17 @@ var getMealNames = function(array) {
     success: function(response) {
       //condense, then display recipe names for the chosen recipes
       var condensedRecipeNames = condenseRecipeNameObjects(makeRecipeNamesArray(response.names, array));
+      if (logs) console.log('condensed recipe names -->',condensedRecipeNames);
       displayRecipeNames(condensedRecipeNames);
     }, // end success
     error: function(err){
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getMealNames
 
 var getMeasurements = function() {
-  console.log('in getMeasurements');
+  if (logs) console.log('in getMeasurements');
   $.ajax({
     type: 'GET',
     url: '/measurement',
@@ -389,13 +391,13 @@ var getMeasurements = function() {
       generateSelectOptions('.measurement-in', response.measurements, 'name', 'id');
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getMeasurements
 
 var getRandomInt = function(maxNum) {
-  console.log('in getRandomInt');
+  if (logs) console.log('in getRandomInt');
   //set min value to 1
   min = Math.ceil(1);
   //set max value the total number of recipes in database
@@ -406,37 +408,37 @@ var getRandomInt = function(maxNum) {
 }; //end getRandomInt
 
 var getRecipeIngredients = function(recipeId) {
-  console.log('in getRecipeIngredients');
+  if (logs) console.log('in getRecipeIngredients');
   var url = '/joined?id=' + recipeId;
   $.ajax({
     type: 'GET',
     url: url,
     success: function(response) {
-      console.log(response);
+      if (logs) console.log(response);
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getRecipeIngredients
 
 var getRecipes = function(recipeNumber) {
-  console.log('in getRecipes');
+  if (logs) console.log('in getRecipes');
   $.ajax({
     type: 'GET',
     url: '/recipe',
     success: function(response) {
-      console.log(response);
+      if (logs) console.log(response);
       displayRecipes(response.recipes);
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getRecipe
 
 var getTotalRecipeCount = function() {
-  console.log('in getTotalRecipeCount');
+  if (logs) console.log('in getTotalRecipeCount');
   $.ajax({
     type: 'GET',
     url: '/recipe/count',
@@ -451,15 +453,15 @@ var getTotalRecipeCount = function() {
       getMealNames(IdArray);
     }, // end success
     error: function(err) {
-      console.log(err);
+      if (logs) console.log(err);
     } // end error
   }); // end ajax
 }; // end getTotalRecipeCount
 
 var makeRecipeIdArray = function(amount, maxNum){
-  console.log('in makeRecipeIdArray');
+  if (logs) console.log('in makeRecipeIdArray');
   numbers = [];
-  console.log('amount -->', amount);
+  if (logs) console.log('amount -->', amount);
   //choose a random number for each number of meals requested by user
   while (numbers.length < amount){
     num = getRandomInt(maxNum);
@@ -480,7 +482,7 @@ var makeRecipeIdArray = function(amount, maxNum){
 }; //end makeRecipeIdArray
 
 var makeRecipeIngredientArray = function() {
-  console.log('in makeRecipeIngredientArray');
+  if (logs) console.log('in makeRecipeIngredientArray');
   //initialize blank array to add to
   var ingredients = [];
   //loop through each form line element
@@ -498,7 +500,7 @@ var makeRecipeIngredientArray = function() {
 }; // end makeRecipeIngredientArray
 
 var makeRecipeNamesArray = function(objectArray, idArray) {
-  console.log('in makeRecipeNamesArray');
+  if (logs) console.log('in makeRecipeNamesArray');
   var mealNames = [];
   //Loop through each recipe id chosen by randomizer
   for (var i = 0; i < idArray.length; i++) {
@@ -516,7 +518,7 @@ var makeRecipeNamesArray = function(objectArray, idArray) {
 }; // end makeRecipeNamesArray
 
 var reset = function() {
-  console.log('in reset');
+  if (logs) console.log('in reset');
   //clear lists and meals
   $('#mealsDiv').empty();
   $('.section-list').empty();
@@ -541,7 +543,7 @@ var reset = function() {
 }; // end reset
 
 var setSectionColumn = function(section) {
-  console.log('in setSectionColumn');
+  if (logs) console.log('in setSectionColumn');
   var $el;
   //Pick a section column div (depending on section name)
   if (section === 'Produce') { //for produce, print in column 1
@@ -557,7 +559,7 @@ var setSectionColumn = function(section) {
 }; // end setSectionColumn
 
 var toggleCreateRecipeForm = function() {
-  console.log('in showCreateRecipeForm');
+  if (logs) console.log('in showCreateRecipeForm');
   //slide add recipe form into view
   $('#createRecipeForm').slideToggle();
   //Control button text on toggle
@@ -569,7 +571,7 @@ var toggleCreateRecipeForm = function() {
 }; // end showCreateRecipeForm
 
 var toggleRecipeVisibility = function() {
-  console.log('in toggleRecipeVisibility');
+  if (logs) console.log('in toggleRecipeVisibility');
   //toggle visibility of resipes on button click
   $('.recipe-display').fadeToggle('fast');
   //Toggle button text to say View or Hide
