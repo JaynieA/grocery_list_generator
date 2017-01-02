@@ -15,7 +15,8 @@ View on Heroku: [Here](https://cryptic-shore-85912.herokuapp.com/)
 
 ###Stretch Goals
 
+* [ ] Allow user to save generated lists
 * [ ] Allow user to change, disable, and delete recipes
-* [ ] Allow user to edit generated list
+* [ ] Allow user to edit the generated list
 * [ ] Allow user to generate a list from recipes of their choice
 * [ ] Improve styling
