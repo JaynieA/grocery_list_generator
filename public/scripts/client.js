@@ -1,5 +1,4 @@
 //TODO: add the rest of the recipes to the database
-//TODO: validate/fix what happens if user needs more recipes than exist in database
 //TODO: Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
 
 $(document).ready(function() {
@@ -373,10 +372,6 @@ var makeRecipeIdArray = function(amount, maxNum){
     } else {
       //don't monitor duplicates. push numbers into array
       numbers.push(num);
-      //TODO: figure this mess out
-      //monitor duplicates while it's less than number of recipes, then go rogue
-
-
     } // end else
   } // end while
   return numbers;
