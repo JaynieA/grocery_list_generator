@@ -55,6 +55,32 @@
             <button type="submit" class="btn btn-success">Create Recipe</button>
         </form>
 
+        <div id="addIngredientsDiv" class="hideable secondary-form">
+            <!-- <h1 class="text-center">Add Ingredients To *New Recipe Name Here*</h1> -->
+            <hr>
+            <form id="addIngredientsForm" onsubmit="addRecipeIngredients(event)" class="form-inline secondary-form">
+                <div class="form-group">
+                    <label for="amountIn">Amount:</label>
+                    <input id="amountIn" type="number" class="form-control" placeholder="amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="ingredientIn">Ingredient</label>
+                    <select id="ingredientIn" class="form-control">
+                        <option value="" selected disabled>Choose One:</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="measurementIn">Measurement</label>
+                    <select id="measurementIn" class="form-control">
+                        <option value="" selected disabled>Choose One:</option>
+                    </select>
+                </div>
+                <button id="addMoreIngredients" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button id="addIngredientsButton" type="submit" class="btn btn-success pull-right">Add Ingredients</button>
+            </form>
+        </div>
+
+
         <div class="clearfix hideable">
             <button id="createRecipeButton" type="button" class="btn btn-warning pull-right">Create New Recipe</button>
         </div>

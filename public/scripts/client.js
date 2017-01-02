@@ -27,21 +27,42 @@ var addNewRecipe = function(e) {
     servings: $('#servingsIn').val(),
     reference_url: $('#referenceLinkIn').val(),
     image_url: $('#imageUrlIn').val()
-  };
+  }; // end objectToSend
   $.ajax({
     type: 'POST',
     url: '/recipe',
     data: objectToSend,
     success: function(response) {
-      console.log(response);
       //clear the form
       clearForm('createRecipeForm');
+      //display add Ingredients form
+      displayAddIngredientsForm(response);
     }, // end success
     error: function(err) {
       console.log(err);
     } // end error
   }); // end ajax
 }; // end addNewRecipe
+
+var displayAddIngredientsForm = function(obj) {
+  console.log('in displayAddIngredientsForm', obj);
+  //hide everything else, show add ingredients form with header
+  $('.hideable').hide();
+  $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>')
+  $('#addIngredientsDiv').fadeIn();
+  $('#addIngredientsForm').fadeIn();
+}; // end displayAddIngredientsForm
+
+var addNewRecipeIngredients = function(obj) {
+  console.log('in addNewRecipeIngredients', obj);
+
+}; // end addNewRecipeIngredients
+
+var addRecipeIngredients = function(e) {
+  console.log('in addRecipeIngredients');
+  //Prevent page refresh
+  e.preventDefault();
+}; // end addRecipeIngredients
 
 var addPlurality = function(ingredient) {
   //If the ingredient amount > 1

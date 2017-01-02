@@ -81,14 +81,16 @@ router.post('/', function(req, res) {
       console.log(err);
       res.sendStatus(500);
     } else {
-      var queryString = 'INSERT INTO recipes (name, servings, reference_url, image_url) VALUES ($1, $2, $3, $4)'
+      var queryString = 'INSERT INTO recipes (name, servings, reference_url, image_url) VALUES ($1, $2, $3, $4) RETURNING id, name';
       var recipe = req.body;
       var query = client.query(queryString, [recipe.name, recipe.servings, recipe.reference_url, recipe.image_url],
-        function(err, response) {
+        function(err, result) {
           if (err) {
             res.sendStatus(500);
           } else {
-            res.sendStatus(201);
+            //Send the id and name of newly created row back to client
+            res.send(result.rows[0]);
+            //res.sendStatus(201);
           } // end else
       }); // end query
     } // end else

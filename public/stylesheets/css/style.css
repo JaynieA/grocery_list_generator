@@ -33,6 +33,11 @@ ul {
   margin-top: 40px; }
   .secondary-form label {
     margin: 0 2px; }
+  .secondary-form .btn-warning {
+    margin-top: 0; }
+  .secondary-form .btn-success {
+    display: block;
+    margin-top: 50px; }
 
 .container {
   width: 70%; }
