@@ -21,13 +21,14 @@ var init = function() {
 
 var addIngredientSubForm = function() {
   console.log('in addIngredientSubForm');
-  console.log($(this).prev());
-  //clone the ingredient form line, and append it after the existing one
+  //clone the ingredient form line
   var $clone = $(this).prev().clone();
+  //clear the input of cloned form
+  $clone.first().find('input').val('');
+  //append the clone after the existing form line
   $(this).before($clone);
   //add focus to the newly added form input
   $(this).prev().children().first().find('input').focus();
-  console.log($(this).prev().children().first().find('input'));
 }; // end addIngredientSubForm
 
 var addNewRecipe = function(e) {
@@ -59,6 +60,9 @@ var addNewRecipe = function(e) {
 
 var displayAddIngredientsForm = function(obj) {
   console.log('in displayAddIngredientsForm', obj);
+  //populate form selects with measurements and ingredients
+  getIngredients();
+  getMeasurements();
   //hide everything else, show add ingredients form with header
   $('.hideable').hide();
   $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>');
@@ -66,12 +70,12 @@ var displayAddIngredientsForm = function(obj) {
   $('#addIngredientsForm').fadeIn();
 }; // end displayAddIngredientsForm
 
-
-
-// var addNewRecipeIngredients = function(obj) {
-//   console.log('in addNewRecipeIngredients', obj);
-//
-// }; // end addNewRecipeIngredients
+var generateSelectOptions = function(selectClass, array, property1, property2) {
+  console.log('in generateSelectOptions for', selectClass);
+  for (var i = 0; i < array.length; i++) {
+    $(selectClass).append('<option value="'+array[i][property2]+'">'+array[i][property1]+'</option>');
+  } // end for
+}; // end generateSelectOptions
 
 var addRecipeIngredients = function(e) {
   console.log('in addRecipeIngredients');
@@ -302,6 +306,7 @@ var getIngredients = function() {
     url: '/ingredient',
     success: function(response){
       console.log(response);
+      generateSelectOptions('.ingredient-in ', response.ingredients, 'name', 'id');
     }, // end success
     error: function(err) {
       console.log(err);
@@ -354,6 +359,7 @@ var getMeasurements = function() {
     url: '/measurement',
     success: function(response) {
       console.log(response);
+      generateSelectOptions('.measurement-in', response.measurements, 'name', 'id');
     }, // end success
     error: function(err) {
       console.log(err);
