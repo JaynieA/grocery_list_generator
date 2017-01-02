@@ -56,22 +56,21 @@
         </form>
 
         <div id="addIngredientsDiv" class="hideable secondary-form">
-            <!-- <h1 class="text-center">Add Ingredients To *New Recipe Name Here*</h1> -->
             <hr>
             <form id="addIngredientsForm" onsubmit="addRecipeIngredients(event)" class="form-inline secondary-form">
                 <div class="form-group">
                     <label for="amountIn">Amount:</label>
-                    <input id="amountIn" type="number" class="form-control" placeholder="amount" required>
+                    <input type="number" class="amount-in form-control" placeholder="amount" required>
                 </div>
                 <div class="form-group">
-                    <label for="ingredientIn">Ingredient</label>
-                    <select id="ingredientIn" class="form-control">
+                    <label>Ingredient</label>
+                    <select class="ingredient-in form-control">
                         <option value="" selected disabled>Choose One:</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="measurementIn">Measurement</label>
-                    <select id="measurementIn" class="form-control">
+                    <label>Measurement</label>
+                    <select class="measurement-in form-control">
                         <option value="" selected disabled>Choose One:</option>
                     </select>
                 </div>

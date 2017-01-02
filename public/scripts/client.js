@@ -1,5 +1,6 @@
 //TODO: add the rest of the recipes to the database
 //TODO: Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
+//TODO: give better class names to elements so its easier to hide/show things appropriately, then clean up those functions
 
 $(document).ready(function() {
   init();
@@ -48,15 +49,15 @@ var displayAddIngredientsForm = function(obj) {
   console.log('in displayAddIngredientsForm', obj);
   //hide everything else, show add ingredients form with header
   $('.hideable').hide();
-  $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>')
+  $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>');
   $('#addIngredientsDiv').fadeIn();
   $('#addIngredientsForm').fadeIn();
 }; // end displayAddIngredientsForm
 
-var addNewRecipeIngredients = function(obj) {
-  console.log('in addNewRecipeIngredients', obj);
-
-}; // end addNewRecipeIngredients
+// var addNewRecipeIngredients = function(obj) {
+//   console.log('in addNewRecipeIngredients', obj);
+//
+// }; // end addNewRecipeIngredients
 
 var addRecipeIngredients = function(e) {
   console.log('in addRecipeIngredients');
@@ -86,17 +87,18 @@ var addPlurality = function(ingredient) {
 }; // end addPlurality
 
 var appendIngredientsToListSections = function(ingredientsArray) {
-  console.log('in appendIngredientsToListSections');
+  console.log('in appendIngredientsToListSections', ingredientsArray);
   //append the ingredient to the appropriate section div
   for (var i = 0; i < ingredientsArray.length; i++) {
+    console.log(ingredientsArray[i].ingredient);
     var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
     var amount = ingredientsArray[i].amount;
     var ingredient = ingredientsArray[i].ingredient;
     var measurement = ingredientsArray[i].measurement;
     $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
   } // end for
-  //Hide the empty list sections
-  $(".section-list:empty").parent().hide();
+  //Hide the empty list section titles
+  $(".section-list:empty").prev().hide();
 }; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
@@ -455,7 +457,9 @@ var reset = function() {
   $('.section-list').empty();
   //hide the list, show the form
   $('#listDisplayDiv').hide();
+
   $('.hideable').fadeIn();
+  $('#createRecipeForm').hide();
   //clear input value, add focus
   $('#numMealsIn').val('');
   $('#numMealsIn').focus();
