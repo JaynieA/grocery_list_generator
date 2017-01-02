@@ -124,7 +124,8 @@ var appendIngredientsToListSections = function(ingredientsArray) {
     $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
   } // end for
   //Hide the empty list section titles
-  $(".section-list:empty").prev().hide();
+  //TODO: fix below line-- it's buggy
+  //$(".section-list:empty").prev().hide();
 }; // end appendIngredientsToListSections
 
 var buildUrlParams = function(numbersArray) {
