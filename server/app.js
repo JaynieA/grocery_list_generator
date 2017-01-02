@@ -5,6 +5,7 @@ var bodyParser = require( 'body-parser' );
 
 //middleware
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended:false}));
 
 app.listen(PORT, function() {
   console.log('server listening on', PORT);

@@ -74,4 +74,25 @@ router.get('/name', function(req, res) {
   }); // end pg connect
 }); // end get
 
+router.post('/', function(req, res) {
+  //res.send(req.body);
+  pg.connect(connection, function(err, client, done) {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      var queryString = 'INSERT INTO recipes (name, servings, reference_url, image_url) VALUES ($1, $2, $3, $4)'
+      var recipe = req.body;
+      var query = client.query(queryString, [recipe.name, recipe.servings, recipe.reference_url, recipe.image_url],
+        function(err, response) {
+          if (err) {
+            res.sendStatus(500);
+          } else {
+            res.sendStatus(201);
+          } // end else
+      }); // end query
+    } // end else
+  }); // end pg connect
+}); // end post
+
 module.exports = router;

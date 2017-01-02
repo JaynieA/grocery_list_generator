@@ -17,24 +17,30 @@ var init = function() {
   $('#createRecipeButton').on('click', toggleCreateRecipeForm);
 }; // end init
 
-var appendIngredientsToListSections = function(ingredientsArray) {
-  console.log('in appendIngredientsToListSections');
-  //append the ingredient to the appropriate section div
-  for (var i = 0; i < ingredientsArray.length; i++) {
-    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
-    var amount = ingredientsArray[i].amount;
-    var ingredient = ingredientsArray[i].ingredient;
-    var measurement = ingredientsArray[i].measurement;
-    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
-  } // end for
-  //Hide the empty list sections
-  $(".section-list:empty").parent().hide();
-}; // end appendIngredientsToListSections
-
 var addNewRecipe = function(e) {
   console.log('in addNewRecipe');
   //Prevent page refresh on form submit
   e.preventDefault();
+  //create object
+  var objectToSend = {
+    name: $('#recipeNameIn').val(),
+    servings: $('#servingsIn').val(),
+    reference_url: $('#referenceLinkIn').val(),
+    image_url: $('#imageUrlIn').val()
+  };
+  $.ajax({
+    type: 'POST',
+    url: '/recipe',
+    data: objectToSend,
+    success: function(response) {
+      console.log(response);
+      //clear the form
+      clearForm('createRecipeForm');
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
 }; // end addNewRecipe
 
 var addPlurality = function(ingredient) {
@@ -58,6 +64,20 @@ var addPlurality = function(ingredient) {
   return ingredient.measurement;
 }; // end addPlurality
 
+var appendIngredientsToListSections = function(ingredientsArray) {
+  console.log('in appendIngredientsToListSections');
+  //append the ingredient to the appropriate section div
+  for (var i = 0; i < ingredientsArray.length; i++) {
+    var $sectionList = $('#'+ingredientsArray[i].section+'Ingredients');
+    var amount = ingredientsArray[i].amount;
+    var ingredient = ingredientsArray[i].ingredient;
+    var measurement = ingredientsArray[i].measurement;
+    $sectionList.append('<li>' + amount + ' ' + measurement + ' ' + ingredient +'</li>');
+  } // end for
+  //Hide the empty list sections
+  $(".section-list:empty").parent().hide();
+}; // end appendIngredientsToListSections
+
 var buildUrlParams = function(numbersArray) {
   console.log('in buildUrlParams');
   //set counter variable and params object
@@ -73,6 +93,11 @@ var buildUrlParams = function(numbersArray) {
   //return the param object
   return params;
 }; // end buildUrlParams
+
+var clearForm = function(formId) {
+  console.log('in clearForm');
+  $('#'+formId).find('input, select').val('');
+}; // end clearForm
 
 var clearItemMeasurement = function(ingredientObject) {
   //console.log('in clearItemMeasurement');
