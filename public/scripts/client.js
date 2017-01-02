@@ -1,5 +1,7 @@
-//TODO: add the rest of the recipes to the database
-//TODO: Add ability to add recipe from DOM using: getMeasurements(), getIngredients();, getRecipeIngredients(number);
+//TODO: add ability to remove .recipe-form-line
+//TODO: add ability to view ingredient recipes one at a time: using getRecipeIngredients(number);
+//TODO: add ability to add/delete recipes from list
+//TODO: add ability to choose recipes for list
 //TODO: give better class names to elements so its easier to hide/show things appropriately, then clean up those functions
 
 $(document).ready(function() {
@@ -13,10 +15,11 @@ var init = function() {
   //Get sections from db
   getSections(); // callback creates Divs for list
   //Event Listeners
-  $('#displayRecipesButton').on('click', getRecipes);
-  $('#resetButton').on('click', reset);
-  $('#createRecipeButton').on('click', toggleCreateRecipeForm);
   $('#addMoreIngredients').on('click', addIngredientSubForm);
+  $('#createRecipeButton').on('click', toggleCreateRecipeForm);
+  $('#displayRecipesButton').on('click', getRecipes);
+  $(document).on('click', '.modal-confirm-close-btn', reset);
+  $('#resetButton').on('click', reset);
 }; // end init
 
 var addIngredientSubForm = function() {
@@ -58,22 +61,6 @@ var addNewRecipe = function(e) {
   }); // end ajax
 }; // end addNewRecipe
 
-var displayAddIngredientsForm = function(obj) {
-  console.log('in displayAddIngredientsForm', obj);
-  //populate form selects with measurements and ingredients
-  getIngredients();
-  getMeasurements();
-  //set data attribute for id of recipe to add ingredients to
-  $('#addIngredientsDiv').data('id', obj.id);
-  //hide everything else, show add ingredients form with header
-  $('.hideable').hide();
-  $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>');
-  $('#addIngredientsDiv').fadeIn();
-  $('#addIngredientsForm').fadeIn();
-}; // end displayAddIngredientsForm
-
-
-
 var addRecipeIngredients = function(e) {
   console.log('in addRecipeIngredients');
   //Prevent page refresh
@@ -94,30 +81,14 @@ var addRecipeIngredients = function(e) {
     data: objectToSend,
     success: function(response) {
       console.log(response);
+      //show confirmation modal
+      $('#confirmationModal').modal('show');
     }, // end success
     error: function(err) {
       console.log(err);
     } // end error
   }); // end ajax
 }; // end addRecipeIngredients
-
-var makeRecipeIngredientArray = function() {
-  console.log('in makeRecipeIngredientArray');
-  //initialize blank array to add to
-  var ingredients = [];
-  //loop through each form line element
-  $('.ingredient-form-line').each(function(i, line) {
-    //make an object containing all the info for ingredient
-    var ingredient = {
-      amount: $(line).children().first().find('input').val(),
-      measurementId: $(line).children(("div:nth-child(2)")).find('select').val(),
-      ingredientId: $(line).children().last().find('select').val()
-    }; // end ingredient
-    //push the object into ingredients array
-    ingredients.push(ingredient);
-  }); // end forEach
-  return ingredients;
-}; // end makeRecipeIngredientArray
 
 var addPlurality = function(ingredient) {
   //If the ingredient amount > 1
@@ -237,6 +208,21 @@ var convertToFraction = function(number) {
   var fraction = new Fraction(number);
   return fraction.toFraction(true);
 }; // end convertToFraction
+
+var displayAddIngredientsForm = function(obj) {
+  console.log('in displayAddIngredientsForm', obj);
+  //populate form selects with measurements and ingredients
+  getIngredients();
+  getMeasurements();
+  //set data attribute for id of recipe to add ingredients to
+  $('#addIngredientsDiv').data('id', obj.id);
+  //hide everything else, show add ingredients form with header
+  $('.hideable').hide();
+  $('#recipeDisplayDiv').hide();
+  $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>');
+  $('#addIngredientsDiv').fadeIn();
+  $('#addIngredientsForm').fadeIn();
+}; // end displayAddIngredientsForm
 
 var displayList =  function(e) {
   console.log('in displayList');
@@ -493,6 +479,24 @@ var makeRecipeIdArray = function(amount, maxNum){
   return numbers;
 }; //end makeRecipeIdArray
 
+var makeRecipeIngredientArray = function() {
+  console.log('in makeRecipeIngredientArray');
+  //initialize blank array to add to
+  var ingredients = [];
+  //loop through each form line element
+  $('.ingredient-form-line').each(function(i, line) {
+    //make an object containing all the info for ingredient
+    var ingredient = {
+      amount: $(line).children().first().find('input').val(),
+      measurementId: $(line).children(("div:nth-child(2)")).find('select').val(),
+      ingredientId: $(line).children().last().find('select').val()
+    }; // end ingredient
+    //push the object into ingredients array
+    ingredients.push(ingredient);
+  }); // end forEach
+  return ingredients;
+}; // end makeRecipeIngredientArray
+
 var makeRecipeNamesArray = function(objectArray, idArray) {
   console.log('in makeRecipeNamesArray');
   var mealNames = [];
@@ -516,13 +520,21 @@ var reset = function() {
   //clear lists and meals
   $('#mealsDiv').empty();
   $('.section-list').empty();
-  //hide the list, show the form
+  //remove any elements added in recipe ingredients form
+  $(".ingredient-form-line:not(:first)").remove();
+  //Reset all of the forms
+  $('form').trigger("reset");
+  //hide the grocery list, show the main form
   $('#listDisplayDiv').hide();
-
   $('.hideable').fadeIn();
   $('#createRecipeForm').hide();
-  //clear input value, add focus
-  $('#numMealsIn').val('');
+  //Remove H1 from #addIngredientsDiv
+  $('#addIngredientsDiv').find('h1').remove();
+  //Hide the #addIngredientsDiv
+  $('#addIngredientsDiv').hide();
+  //Reset text of #createRecipeButton
+  $('#createRecipeButton').text('Create New Recipe');
+  //Add focus to the main form's input
   $('#numMealsIn').focus();
   //set recipe button text
   $('#displayRecipesButton').text('View All Recipes');

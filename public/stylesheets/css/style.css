@@ -84,4 +84,13 @@ ul {
     .recipe .recipe-link:hover span {
       color: white; }
 
+.modal {
+  top: 10%; }
+  .modal .modal-header {
+    background-color: #5cb85c; }
+  .modal h4 {
+    color: white;
+    text-decoration: none;
+    text-align: center; }
+
 /*# sourceMappingURL=style.css.map */
