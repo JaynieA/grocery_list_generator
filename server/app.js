@@ -5,7 +5,7 @@ var bodyParser = require( 'body-parser' );
 
 //middleware
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.listen(PORT, function() {
   console.log('server listening on', PORT);
@@ -26,3 +26,6 @@ app.use('/joined', joined);
 
 var section = require( '../routers/section' );
 app.use('/section', section);
+
+var recipe_ingredient = require( '../routers/recipe_ingredient' );
+app.use( '/recipe_ingredient', recipe_ingredient );

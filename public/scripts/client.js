@@ -63,6 +63,8 @@ var displayAddIngredientsForm = function(obj) {
   //populate form selects with measurements and ingredients
   getIngredients();
   getMeasurements();
+  //set data attribute for id of recipe to add ingredients to
+  $('#addIngredientsDiv').data('id', obj.id);
   //hide everything else, show add ingredients form with header
   $('.hideable').hide();
   $('#addIngredientsDiv').prepend('<h1 class="text-center">Add Ingredients For ' + obj.name + '</h1>');
@@ -70,20 +72,33 @@ var displayAddIngredientsForm = function(obj) {
   $('#addIngredientsForm').fadeIn();
 }; // end displayAddIngredientsForm
 
-var generateSelectOptions = function(selectClass, array, property1, property2) {
-  console.log('in generateSelectOptions for', selectClass);
-  for (var i = 0; i < array.length; i++) {
-    $(selectClass).append('<option value="'+array[i][property2]+'">'+array[i][property1]+'</option>');
-  } // end for
-}; // end generateSelectOptions
+
 
 var addRecipeIngredients = function(e) {
   console.log('in addRecipeIngredients');
   //Prevent page refresh
   e.preventDefault();
+  //make array of ingredients to add
   var ingredientsToAdd = makeRecipeIngredientArray();
-  console.log(ingredientsToAdd);
-
+  //get new recipe id
+  var recipeId = $('#addIngredientsDiv').data('id');
+  //make object to send
+  var objectToSend = {
+    id: recipeId,
+    ingredients: ingredientsToAdd
+  }; // end objectToSend
+  console.log(objectToSend);
+  $.ajax({
+    type: 'POST',
+    url: '/recipe_ingredient',
+    data: objectToSend,
+    success: function(response) {
+      console.log(response);
+    }, // end success
+    error: function(err) {
+      console.log(err);
+    } // end error
+  }); // end ajax
 }; // end addRecipeIngredients
 
 var makeRecipeIngredientArray = function() {
@@ -305,6 +320,13 @@ var generateSectionElements = function(sectionsArray) {
     $el.append('<ul id="' + sectionsArray[i].section + 'Ingredients" class="text-center section-list"></ul>');
   } // end for
 }; // end generateSectionDivs
+
+var generateSelectOptions = function(selectClass, array, property1, property2) {
+  console.log('in generateSelectOptions for', selectClass);
+  for (var i = 0; i < array.length; i++) {
+    $(selectClass).append('<option value="'+array[i][property2]+'">'+array[i][property1]+'</option>');
+  } // end for
+}; // end generateSelectOptions
 
 var getSections = function(){
   console.log('in getSections');
