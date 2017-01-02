@@ -81,7 +81,28 @@ var addRecipeIngredients = function(e) {
   console.log('in addRecipeIngredients');
   //Prevent page refresh
   e.preventDefault();
+  var ingredientsToAdd = makeRecipeIngredientArray();
+  console.log(ingredientsToAdd);
+
 }; // end addRecipeIngredients
+
+var makeRecipeIngredientArray = function() {
+  console.log('in makeRecipeIngredientArray');
+  //initialize blank array to add to
+  var ingredients = [];
+  //loop through each form line element
+  $('.ingredient-form-line').each(function(i, line) {
+    //make an object containing all the info for ingredient
+    var ingredient = {
+      amount: $(line).children().first().find('input').val(),
+      measurementId: $(line).children(("div:nth-child(2)")).find('select').val(),
+      ingredientId: $(line).children().last().find('select').val()
+    }; // end ingredient
+    //push the object into ingredients array
+    ingredients.push(ingredient);
+  }); // end forEach
+  return ingredients;
+}; // end makeRecipeIngredientArray
 
 var addPlurality = function(ingredient) {
   //If the ingredient amount > 1
@@ -305,7 +326,6 @@ var getIngredients = function() {
     type: 'GET',
     url: '/ingredient',
     success: function(response){
-      console.log(response);
       generateSelectOptions('.ingredient-in ', response.ingredients, 'name', 'id');
     }, // end success
     error: function(err) {
@@ -358,7 +378,6 @@ var getMeasurements = function() {
     type: 'GET',
     url: '/measurement',
     success: function(response) {
-      console.log(response);
       generateSelectOptions('.measurement-in', response.measurements, 'name', 'id');
     }, // end success
     error: function(err) {
