@@ -58,21 +58,23 @@
         <div id="addIngredientsDiv" class="hideable secondary-form">
             <hr>
             <form id="addIngredientsForm" onsubmit="addRecipeIngredients(event)" class="form-inline secondary-form">
-                <div class="form-group">
-                    <label for="amountIn">Amount:</label>
-                    <input type="number" class="amount-in form-control" placeholder="amount" required>
-                </div>
-                <div class="form-group">
-                    <label>Ingredient</label>
-                    <select class="ingredient-in form-control">
-                        <option value="" selected disabled>Choose One:</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Measurement</label>
-                    <select class="measurement-in form-control">
-                        <option value="" selected disabled>Choose One:</option>
-                    </select>
+                <div class="ingredient-form-line">
+                    <div class="form-group">
+                        <label for="amountIn">Amount:</label>
+                        <input type="number" class="amount-in form-control" placeholder="amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ingredient</label>
+                        <select class="ingredient-in form-control">
+                            <option value="" selected disabled>Choose One:</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Measurement</label>
+                        <select class="measurement-in form-control">
+                            <option value="" selected disabled>Choose One:</option>
+                        </select>
+                    </div>
                 </div>
                 <button id="addMoreIngredients" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                 <button id="addIngredientsButton" type="submit" class="btn btn-success pull-right">Add Ingredients</button>

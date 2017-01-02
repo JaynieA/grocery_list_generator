@@ -16,7 +16,19 @@ var init = function() {
   $('#displayRecipesButton').on('click', getRecipes);
   $('#resetButton').on('click', reset);
   $('#createRecipeButton').on('click', toggleCreateRecipeForm);
+  $('#addMoreIngredients').on('click', addIngredientSubForm);
 }; // end init
+
+var addIngredientSubForm = function() {
+  console.log('in addIngredientSubForm');
+  console.log($(this).prev());
+  //clone the ingredient form line, and append it after the existing one
+  var $clone = $(this).prev().clone();
+  $(this).before($clone);
+  //add focus to the newly added form input
+  $(this).prev().children().first().find('input').focus();
+  console.log($(this).prev().children().first().find('input'));
+}; // end addIngredientSubForm
 
 var addNewRecipe = function(e) {
   console.log('in addNewRecipe');
@@ -53,6 +65,8 @@ var displayAddIngredientsForm = function(obj) {
   $('#addIngredientsDiv').fadeIn();
   $('#addIngredientsForm').fadeIn();
 }; // end displayAddIngredientsForm
+
+
 
 // var addNewRecipeIngredients = function(obj) {
 //   console.log('in addNewRecipeIngredients', obj);
